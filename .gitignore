@@ -1,0 +1,56 @@
+# Ignora i file di sistema (Windows/Mac)
+Thumbs.db
+.DS_Store
+
+# Ignora le cartelle delle dipendenze (pesanti e inutili da caricare)
+node_modules/
+vendor/
+.claude/
+.chrome_profile/
+__pycache__/
+attachments/
+old/
+build/
+
+# Ignora i file di configurazione con dati sensibili
+.env
+config/database.yml
+*_key.json
+*.key.json
+*firebase*.json
+*adminsdk*.json
+
+# Legacy Firebase / Netlify / PWA standalone (non più usati)
+firebase_sync.py
+netlify.toml
+netlify/
+taskplanner-pwa/
+package.json
+package-lock.json
+
+# Ignora tutti i log, ma tieni il file di istruzioni per i log
+*.log
+!logs/README.md
+
+*.db
+*.bak
+
+# Dati runtime (DB, log, allegati)
+.taskplanner/
+
+# Virtual environment
+venv/
+
+# Cartella locale dell'utente taskplanner sul server (chiave SSH di deploy)
+.ssh/
+
+# Socket di controllo gunicorn (runtime, mode 700 non leggibile da ops → falso
+# positivo "modifiche locali" nella dashboard)
+.gunicorn/
+
+# Output PyInstaller (i binari si pubblicano solo come GitHub Release)
+dist/
+*.exe
+
+# Istruzioni locali per Claude Code (dettagli infrastruttura, non pubblici)
+CLAUDE.local.md

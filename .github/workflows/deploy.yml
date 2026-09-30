@@ -1,0 +1,24 @@
+name: Deploy server
+
+on:
+  push:
+    branches:
+      - master
+    # Non fare deploy su push di tag (li gestisce desktop_release.yml)
+    tags-ignore:
+      - '**'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy su server Hetzner via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: bash /root/deploy_taskplanner.sh

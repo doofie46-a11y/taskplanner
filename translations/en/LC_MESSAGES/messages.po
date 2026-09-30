@@ -1,0 +1,958 @@
+# English translations for TaskPlanner
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+# ── Login
+msgid "Accedi"
+msgstr "Sign in"
+
+msgid "Accedi con il tuo account Google per continuare."
+msgstr "Sign in with your Google account to continue."
+
+msgid "Accedi con Google"
+msgstr "Sign in with Google"
+
+# ── Navigation / common
+msgid "Torna alla Home"
+msgstr "Back to Home"
+
+msgid "Torna ai task"
+msgstr "Back to Tasks"
+
+msgid "Torna ai Task"
+msgstr "Back to Tasks"
+
+msgid "Oggi"
+msgstr "Today"
+
+msgid "Domani"
+msgstr "Tomorrow"
+
+msgid "Prossima settimana"
+msgstr "Next week"
+
+msgid "Annulla"
+msgstr "Cancel"
+
+msgid "Mostra"
+msgstr "Show"
+
+msgid "Nuovo"
+msgstr "New"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Statistiche"
+msgstr "Statistics"
+
+msgid "Gestione Categorie"
+msgstr "Manage Categories"
+
+msgid "Cestino"
+msgstr "Trash"
+
+# ── Forms — labels and sections
+msgid "Titolo"
+msgstr "Title"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Ora"
+msgstr "Time"
+
+msgid "Ricorrenza"
+msgstr "Recurrence"
+
+msgid "Priorità"
+msgstr "Priority"
+
+msgid "Categoria"
+msgstr "Category"
+
+msgid "⏫ Escalation (giorni)"
+msgstr "⏫ Escalation (days)"
+
+msgid "🔗 URL (opzionale)"
+msgstr "🔗 URL (optional)"
+
+msgid "🎨 Colore bordo card (opzionale)"
+msgstr "🎨 Card border color (optional)"
+
+msgid "N° occorrenze max"
+msgstr "Max occurrences"
+
+msgid "Data di fine"
+msgstr "End date"
+
+msgid "Pianificazione"
+msgstr "Scheduling"
+
+msgid "Fine ricorrenza (opzionale)"
+msgstr "Recurrence end (optional)"
+
+msgid "Priorità ed Escalation"
+msgstr "Priority & Escalation"
+
+msgid "Dettagli"
+msgstr "Details"
+
+msgid "Note libere"
+msgstr "Free notes"
+
+msgid "Nessuna"
+msgstr "None"
+
+msgid "Giornaliera"
+msgstr "Daily"
+
+msgid "Ogni 2 giorni"
+msgstr "Every 2 days"
+
+msgid "Settimanale"
+msgstr "Weekly"
+
+msgid "Ogni 2 settimane"
+msgstr "Every 2 weeks"
+
+msgid "Mensile (stesso giorno)"
+msgstr "Monthly (same day)"
+
+msgid "Mensile (primo lunedì)"
+msgstr "Monthly (first Monday)"
+
+msgid "Mensile (ultimo venerdì)"
+msgstr "Monthly (last Friday)"
+
+msgid "Urgente"
+msgstr "Urgent"
+
+msgid "Alta"
+msgstr "High"
+
+msgid "Media"
+msgstr "Medium"
+
+msgid "Bassa"
+msgstr "Low"
+
+msgid "ogni N gg di ritardo +1 livello priorità"
+msgstr "every N days of delay +1 priority level"
+
+msgid "— Nessuna —"
+msgstr "— None —"
+
+msgid "Nessuno"
+msgstr "None"
+
+msgid "Fissa in cima alla lista"
+msgstr "Pin to top of list"
+
+msgid "Allegato"
+msgstr "Attachment"
+
+msgid "Aggiungi allegato"
+msgstr "Add attachment"
+
+msgid "Appunti, riferimenti, dettagli aggiuntivi…"
+msgstr "Notes, references, additional details…"
+
+msgid "Appunti, riferimenti, dettagli aggiuntivi…"
+msgstr "Notes, references, additional details…"
+
+msgid "＋ Aggiungi Task"
+msgstr "＋ Add Task"
+
+msgid "💾 Salva Modifiche"
+msgstr "💾 Save Changes"
+
+msgid "Nuovo Task"
+msgstr "New Task"
+
+msgid "Modifica Task"
+msgstr "Edit Task"
+
+msgid "💾 Salva"
+msgstr "💾 Save"
+
+msgid "🗑️ Elimina"
+msgstr "🗑️ Delete"
+
+# ── Setup
+msgid "Nuova Categoria"
+msgstr "New Category"
+
+msgid "Nome categoria"
+msgstr "Category name"
+
+msgid "Gruppo (opzionale)"
+msgstr "Group (optional)"
+
+msgid "Gruppo"
+msgstr "Group"
+
+msgid "Aggiungi"
+msgstr "Add"
+
+msgid "Colore"
+msgstr "Color"
+
+msgid "Nome"
+msgstr "Name"
+
+msgid "Azioni"
+msgstr "Actions"
+
+msgid "Nessuna categoria presente."
+msgstr "No categories found."
+
+msgid "Eliminare questa categoria?"
+msgstr "Delete this category?"
+
+# ── Cestino
+msgid "I task nel cestino vengono eliminati automaticamente dopo 7 giorni."
+msgstr "Tasks in the trash are automatically deleted after 7 days."
+
+msgid "Il cestino è vuoto."
+msgstr "The trash is empty."
+
+msgid "Eliminare definitivamente tutti i task nel cestino?"
+msgstr "Permanently delete all tasks in the trash?"
+
+msgid "Eliminare definitivamente questo task?"
+msgstr "Permanently delete this task?"
+
+msgid "🗑️ Svuota cestino"
+msgstr "🗑️ Empty trash"
+
+msgid "↩ Ripristina"
+msgstr "↩ Restore"
+
+msgid "✕ Elimina"
+msgstr "✕ Delete"
+
+msgid "Eliminato domani"
+msgstr "Deleted tomorrow"
+
+msgid "1 giorno"
+msgstr "1 day"
+
+msgid "%(num)d giorno"
+msgstr "%(num)d day"
+
+msgid "%(num)d giorni"
+msgstr "%(num)d days"
+
+# ── Stats
+msgid "Dal"
+msgstr "From"
+
+msgid "Al"
+msgstr "To"
+
+msgid "Priorità (multi)"
+msgstr "Priority (multi)"
+
+msgid "Categoria (multi)"
+msgstr "Category (multi)"
+
+msgid "Vista"
+msgstr "View"
+
+msgid "Totale"
+msgstr "Total"
+
+msgid "Giornaliero"
+msgstr "Daily"
+
+msgid "Applica filtri"
+msgstr "Apply filters"
+
+msgid "Task risolti"
+msgstr "Resolved tasks"
+
+msgid "Task creati"
+msgstr "Created tasks"
+
+msgid "Rollover"
+msgstr "Rollover"
+
+msgid "Tempo totale"
+msgstr "Total time"
+
+msgid "nel periodo selezionato"
+msgstr "in the selected period"
+
+msgid "aperti nel periodo"
+msgstr "opened in the period"
+
+msgid "posticipazioni eseguite"
+msgstr "postponements performed"
+
+msgid "su task completati"
+msgstr "on completed tasks"
+
+msgid "Risolti per Priorità"
+msgstr "Resolved by Priority"
+
+msgid "Risolti per Categoria"
+msgstr "Resolved by Category"
+
+msgid "Creati per Categoria"
+msgstr "Created by Category"
+
+msgid "Creati per Priorità"
+msgstr "Created by Priority"
+
+msgid "Rollover per Categoria"
+msgstr "Rollover by Category"
+
+msgid "Rollover per Priorità"
+msgstr "Rollover by Priority"
+
+msgid "Tempo impiegato per Categoria"
+msgstr "Time spent by Category"
+
+msgid "Tempo impiegato per Priorità"
+msgstr "Time spent by Priority"
+
+msgid "Progressivo Giornaliero"
+msgstr "Daily Progress"
+
+msgid "Totali di periodo"
+msgstr "Period totals"
+
+msgid "Riepilogo periodo"
+msgstr "Period summary"
+
+msgid "Risolti"
+msgstr "Resolved"
+
+msgid "Creati"
+msgstr "Created"
+
+msgid "In scadenza"
+msgstr "Due"
+
+msgid "Tempo"
+msgstr "Time"
+
+msgid "Risolti (andamento)"
+msgstr "Resolved (trend)"
+
+# ── Export
+msgid "Esporta Task"
+msgstr "Export Tasks"
+
+msgid "Changelog"
+msgstr "Changelog"
+
+msgid "Periodo"
+msgstr "Period"
+
+msgid "Categorie"
+msgstr "Categories"
+
+msgid "Stato task"
+msgstr "Task status"
+
+msgid "Task ricorrenti"
+msgstr "Recurring tasks"
+
+msgid "Campi da includere"
+msgstr "Fields to include"
+
+msgid "Formato di esportazione"
+msgstr "Export format"
+
+msgid "Seleziona/Deseleziona tutto"
+msgstr "Select/Deselect all"
+
+msgid "Tutti"
+msgstr "All"
+
+msgid "Aperti"
+msgstr "Open"
+
+msgid "Completati"
+msgstr "Completed"
+
+msgid "Solo task con allegati"
+msgstr "Only tasks with attachments"
+
+msgid "Espandi i task ricorrenti su tutte le giornate del periodo"
+msgstr "Expand recurring tasks across all days in the period"
+
+msgid "Se attivo, ogni task ricorrente genera una riga per ogni occorrenza nel periodo selezionato."
+msgstr "When active, each recurring task generates a row for each occurrence in the selected period."
+
+msgid "Escludi completamente i task ricorrenti dall&#39;export"
+msgstr "Completely exclude recurring tasks from export"
+
+msgid "Orario"
+msgstr "Time"
+
+msgid "Ricorrenza:"
+msgstr "Recurrence:"
+
+msgid "Creato il"
+msgstr "Created on"
+
+msgid "Esporta"
+msgstr "Export"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "JSON"
+msgstr "JSON"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Markdown"
+msgstr "Markdown"
+
+# ── Index — Sidebar
+msgid "Stati"
+msgstr "States"
+
+msgid "Non completati"
+msgstr "Not completed"
+
+msgid "Fissati"
+msgstr "Pinned"
+
+msgid "⚠️ Senza categoria"
+msgstr "⚠️ No category"
+
+msgid "Senza categoria"
+msgstr "No category"
+
+msgid "Seleziona tutto"
+msgstr "Select all"
+
+msgid "Altre"
+msgstr "Other"
+
+msgid "Installa App"
+msgstr "Install App"
+
+msgid "Ricorrenze"
+msgstr "Recurrences"
+
+msgid "I task arretrati vengono riportati a oggi tramite rollover automatico."
+msgstr "Overdue tasks are automatically rolled over to today."
+
+msgid "Vedi changelog"
+msgstr "View changelog"
+
+msgid "Filtri"
+msgstr "Filters"
+
+# ── Index — Header
+msgid "Task del giorno"
+msgstr "Tasks for the day"
+
+msgid "Lista"
+msgstr "List"
+
+msgid "2 colonne"
+msgstr "2 columns"
+
+msgid "3 colonne"
+msgstr "3 columns"
+
+msgid "Cambia visualizzazione"
+msgstr "Change layout"
+
+# ── Index — Card badges
+msgid "Task fissato in cima"
+msgstr "Task pinned to top"
+
+msgid "Fissato"
+msgstr "Pinned"
+
+msgid "Completato"
+msgstr "Completed"
+
+msgid "Aperto"
+msgstr "Open"
+
+# ── Index — Card body
+msgid "Orario:"
+msgstr "Time:"
+
+msgid "Ricorrenza:"
+msgstr "Recurrence:"
+
+msgid "Data prevista:"
+msgstr "Scheduled date:"
+
+msgid "Posticipato da:"
+msgstr "Postponed from:"
+
+msgid "Tempo impiegato:"
+msgstr "Time spent:"
+
+msgid "Allegati:"
+msgstr "Attachments:"
+
+msgid "Note"
+msgstr "Notes"
+
+msgid "Giornaliera"
+msgstr "Daily"
+
+msgid "Mensile"
+msgstr "Monthly"
+
+msgid "Mens. primo lunedì"
+msgstr "Monthly first Monday"
+
+msgid "Mens. ultimo venerdì"
+msgstr "Monthly last Friday"
+
+# ── Index — Card actions
+msgid "Completa"
+msgstr "Complete"
+
+msgid "Modifica"
+msgstr "Edit"
+
+msgid "Posticipa"
+msgstr "Postpone"
+
+msgid "Copia"
+msgstr "Copy"
+
+msgid "Pin"
+msgstr "Pin"
+
+msgid "Unpin"
+msgstr "Unpin"
+
+msgid "Pomodoro"
+msgstr "Pomodoro"
+
+msgid "Outlook"
+msgstr "Outlook"
+
+msgid "Crea evento"
+msgstr "Create event"
+
+msgid "Crea attività"
+msgstr "Create task"
+
+msgid "Elimina"
+msgstr "Delete"
+
+# ── Index — Footer
+msgid "Tempo totale impiegato oggi:"
+msgstr "Total time spent today:"
+
+msgid "Conteggio task selezione:"
+msgstr "Selected task count:"
+
+# ── Index — Section divider
+msgid "assegna una categoria a questi task"
+msgstr "assign a category to these tasks"
+
+# ── Outlook modals
+msgid "Crea evento Outlook"
+msgstr "Create Outlook Event"
+
+msgid "Crea attività Outlook"
+msgstr "Create Outlook Task"
+
+msgid "Oggetto"
+msgstr "Subject"
+
+msgid "Descrizione"
+msgstr "Description"
+
+msgid "Giorno intero"
+msgstr "All day"
+
+msgid "Data inizio"
+msgstr "Start date"
+
+msgid "Ora inizio"
+msgstr "Start time"
+
+msgid "Data fine"
+msgstr "End date"
+
+msgid "Ora fine"
+msgstr "End time"
+
+msgid "Data scadenza"
+msgstr "Due date"
+
+msgid "Ora promemoria"
+msgstr "Reminder time"
+
+msgid "Crea in Outlook"
+msgstr "Create in Outlook"
+
+# ── Pomodoro widget
+msgid "Lavoro"
+msgstr "Work"
+
+msgid "timer attivo"
+msgstr "timer active"
+
+msgid "Stop"
+msgstr "Stop"
+
+# ── Title attributes
+msgid "Avvia timer Pomodoro"
+msgstr "Start Pomodoro timer"
+
+msgid "Avvia timer Pomodoro senza task"
+msgstr "Start Pomodoro timer without task"
+
+msgid "Elimina allegato"
+msgstr "Delete attachment"
+
+msgid "Logout"
+msgstr "Logout"
+
+# ── Dark mode toggle
+msgid "Modalità chiara"
+msgstr "Light mode"
+
+msgid "Modalità scura"
+msgstr "Dark mode"
+
+# ── Chrome notifications
+msgid "Task in scadenza"
+msgstr "Tasks due"
+
+# ── Popup confirmations / prompts
+msgid "Inserisci il tempo impiegato in minuti (facoltativo):"
+msgstr "Enter time spent in minutes (optional):"
+
+msgid "Eliminare allegato"
+msgstr "Delete attachment"
+
+msgid "Spostare questo task a domani?"
+msgstr "Move this task to tomorrow?"
+
+msgid "Eliminare questo task?"
+msgstr "Delete this task?"
+
+msgid "Errore durante il caricamento del file."
+msgstr "Error uploading the file."
+
+# ── Outlook info banners
+msgid "L&#39;evento verrà creato direttamente nel calendario Outlook tramite COM (solo Windows con Outlook installato). Richiede pywin32."
+msgstr "The event will be created directly in the Outlook calendar via COM (Windows only, requires Outlook installed). Requires pywin32."
+
+msgid "L&#39;attività verrà creata direttamente in Outlook tramite COM (solo Windows con Outlook installato). Richiede pywin32."
+msgstr "The task will be created directly in Outlook via COM (Windows only, requires Outlook installed). Requires pywin32."
+
+# ── Outlook JS alerts / button states
+msgid "✅ Evento creato in Outlook!"
+msgstr "✅ Event created in Outlook!"
+
+msgid "✅ Attività creata in Outlook!"
+msgstr "✅ Task created in Outlook!"
+
+msgid "❌ Errore:"
+msgstr "❌ Error:"
+
+msgid "❌ Errore di rete:"
+msgstr "❌ Network error:"
+
+msgid "Errore sconosciuto"
+msgstr "Unknown error"
+
+msgid "⏳ Creazione..."
+msgstr "⏳ Creating..."
+
+msgid "Evento da TaskPlanner"
+msgstr "Event from TaskPlanner"
+
+msgid "Calendario"
+msgstr "Calendar"
+
+msgid "Aggiungi al calendario"
+msgstr "Add to calendar"
+
+msgid "Scarica .ics"
+msgstr "Download .ics"
+
+msgid "Attività da TaskPlanner"
+msgstr "Task from TaskPlanner"
+
+msgid "Contaschei"
+msgstr "Contaschei"
+
+msgid "Bilancio"
+msgstr "Balance"
+
+msgid "Entrata"
+msgstr "Income"
+
+msgid "Entrate"
+msgstr "Income"
+
+msgid "Spesa"
+msgstr "Expense"
+
+msgid "Uscite"
+msgstr "Expenses"
+
+msgid "Totale entrate"
+msgstr "Total income"
+
+msgid "Totale uscite"
+msgstr "Total expenses"
+
+msgid "Flusso netto"
+msgstr "Net flow"
+
+msgid "Flusso netto del periodo"
+msgstr "Net flow for the period"
+
+msgid "Mese corrente"
+msgstr "Current month"
+
+msgid "Nuovo movimento"
+msgstr "New movement"
+
+msgid "Modifica movimento"
+msgstr "Edit movement"
+
+msgid "Salva modifiche"
+msgstr "Save changes"
+
+msgid "Salva"
+msgstr "Save"
+
+msgid "Tipo"
+msgstr "Type"
+
+msgid "Tipo movimento"
+msgstr "Movement type"
+
+msgid "Tipologia"
+msgstr "Category"
+
+msgid "Tipologia (multi)"
+msgstr "Category (multi)"
+
+msgid "Tipologie"
+msgstr "Categories"
+
+msgid "Tipologie movimento"
+msgstr "Movement categories"
+
+msgid "Tipologie esistenti"
+msgstr "Existing categories"
+
+msgid "Nuova tipologia"
+msgstr "New category"
+
+msgid "Nome tipologia"
+msgstr "Category name"
+
+msgid "Nessuna tipologia"
+msgstr "No category"
+
+msgid "Nessuna tipologia presente."
+msgstr "No category present."
+
+msgid "Importo"
+msgstr "Amount"
+
+msgid "Nota"
+msgstr "Note"
+
+msgid "Annuale"
+msgstr "Yearly"
+
+msgid "N&deg; occorrenze max"
+msgstr "Max number of occurrences"
+
+msgid "Movimenti del mese"
+msgstr "Movements this month"
+
+msgid "Movimenti del periodo"
+msgstr "Movements in period"
+
+msgid "Nessun movimento nel periodo selezionato"
+msgstr "No movement in the selected period"
+
+msgid "ricorrente"
+msgstr "recurring"
+
+msgid "modificata"
+msgstr "modified"
+
+msgid "Modifica la serie"
+msgstr "Edit the series"
+
+msgid "Modifica solo questa occorrenza"
+msgstr "Edit only this occurrence"
+
+msgid "Salta questa occorrenza?"
+msgstr "Skip this occurrence?"
+
+msgid "Ripristina occorrenza originale"
+msgstr "Restore original occurrence"
+
+msgid "Eliminare questo movimento?"
+msgstr "Delete this movement?"
+
+msgid "Eliminare questa tipologia? I movimenti collegati resteranno senza tipologia."
+msgstr "Delete this category? Linked movements will remain uncategorized."
+
+msgid "Torna a Contaschei"
+msgstr "Back to Contaschei"
+
+msgid "Periodo precedente"
+msgstr "Previous period"
+
+msgid "Periodo successivo"
+msgstr "Next period"
+
+msgid "Per tipologia"
+msgstr "By category"
+
+msgid "Mese"
+msgstr "Month"
+
+msgid "Bimestre"
+msgstr "Bimonth"
+
+msgid "Trimestre"
+msgstr "Quarter"
+
+msgid "Quadrimestre"
+msgstr "Four-month period"
+
+msgid "Semestre"
+msgstr "Half-year"
+
+msgid "Anno"
+msgstr "Year"
+
+msgid "Nuovo importo per questa occorrenza:"
+msgstr "New amount for this occurrence:"
+
+msgid "Nota (opzionale):"
+msgstr "Note (optional):"
+
+msgid "Informativa privacy"
+msgstr "Privacy Policy"
+
+msgid "Ultimo aggiornamento: giugno 2026"
+msgstr "Last updated: June 2026"
+
+msgid "Titolare del trattamento"
+msgstr "Data Controller"
+
+msgid "TaskPlanner è un&#39;applicazione ad uso privato. Per esercitare i diritti previsti dal GDPR o per qualsiasi richiesta relativa ai dati personali, è possibile contattare il titolare all&#39;indirizzo:"
+msgstr "TaskPlanner is a private application. To exercise rights under GDPR or for any request relating to personal data, please contact the controller at:"
+
+msgid "Dati raccolti"
+msgstr "Data Collected"
+
+msgid "Al momento dell&#39;accesso tramite Google OAuth, l&#39;applicazione riceve e conserva i seguenti dati forniti da Google:"
+msgstr "When logging in via Google OAuth, the application receives and stores the following data provided by Google:"
+
+msgid "Nome e cognome"
+msgstr "Full name"
+
+msgid "Indirizzo email"
+msgstr "Email address"
+
+msgid "Foto del profilo"
+msgstr "Profile photo"
+
+msgid "Non vengono raccolti dati sanitari, dati di geolocalizzazione o altri dati appartenenti a categorie particolari ai sensi dell&#39;art. 9 GDPR."
+msgstr "No health data, geolocation data, or other special-category data under Art. 9 GDPR is collected."
+
+msgid "Finalità del trattamento"
+msgstr "Purpose of Processing"
+
+msgid "I dati vengono utilizzati esclusivamente per:"
+msgstr "Data is used exclusively for:"
+
+msgid "Autenticazione: identificare l&#39;utente e consentire l&#39;accesso all&#39;applicazione"
+msgstr "Authentication: identifying the user and granting access to the application"
+
+msgid "Personalizzazione dell&#39;interfaccia (visualizzazione di nome e foto)"
+msgstr "Interface personalisation (displaying name and profile photo)"
+
+msgid "Base giuridica"
+msgstr "Legal Basis"
+
+msgid "Il trattamento è basato sul legittimo interesse del titolare a garantire un accesso sicuro e personalizzato all&#39;applicazione (art. 6.1.f GDPR)."
+msgstr "Processing is based on the legitimate interest of the controller in ensuring secure and personalised access to the application (Art. 6.1.f GDPR)."
+
+msgid "Terze parti"
+msgstr "Third Parties"
+
+msgid "L&#39;autenticazione è gestita tramite Google OAuth (Google LLC). Durante il processo di login, Google tratta i dati secondo la propria informativa:"
+msgstr "Authentication is handled via Google OAuth (Google LLC). During the login process, Google processes data according to its own privacy policy:"
+
+msgid "TaskPlanner non condivide dati personali con altre terze parti."
+msgstr "TaskPlanner does not share personal data with any other third parties."
+
+msgid "Conservazione dei dati"
+msgstr "Data Retention"
+
+msgid "I dati vengono conservati finché l&#39;utente mantiene un accesso attivo all&#39;applicazione. È possibile richiedere la cancellazione dell&#39;account e di tutti i dati associati contattando il titolare."
+msgstr "Data is retained for as long as the user maintains an active account in the application. You may request deletion of your account and all associated data by contacting the controller."
+
+msgid "L&#39;applicazione utilizza esclusivamente un cookie tecnico di sessione, necessario per mantenere l&#39;utente autenticato tra una pagina e l&#39;altra. Non vengono utilizzati cookie di profilazione, tracking o advertising."
+msgstr "The application uses only a technical session cookie, necessary to keep the user authenticated between pages. No profiling, tracking, or advertising cookies are used."
+
+msgid "I cookie tecnici necessari sono esenti dall&#39;obbligo di consenso ai sensi della direttiva ePrivacy e del Provvedimento del Garante Privacy dell&#39;8 maggio 2014."
+msgstr "Strictly necessary technical cookies are exempt from the consent requirement under the ePrivacy Directive and the Italian Data Protection Authority's ruling of 8 May 2014."
+
+msgid "Diritti dell&#39;interessato"
+msgstr "Data Subject Rights"
+
+msgid "In base agli articoli 15–22 del GDPR, l&#39;utente ha diritto di:"
+msgstr "Under Articles 15–22 of the GDPR, the user has the right to:"
+
+msgid "Accedere ai propri dati (art. 15)"
+msgstr "Access their data (Art. 15)"
+
+msgid "Richiederne la rettifica (art. 16)"
+msgstr "Request rectification (Art. 16)"
+
+msgid "Ottenerne la cancellazione (art. 17)"
+msgstr "Request erasure (Art. 17)"
+
+msgid "Limitarne il trattamento (art. 18)"
+msgstr "Restrict processing (Art. 18)"
+
+msgid "Richiedere la portabilità dei dati (art. 20)"
+msgstr "Request data portability (Art. 20)"
+
+msgid "Opporsi al trattamento (art. 21)"
+msgstr "Object to processing (Art. 21)"
+
+msgid "Per esercitare questi diritti, scrivere a:"
+msgstr "To exercise these rights, write to:"
+
+msgid "È inoltre possibile presentare reclamo al Garante per la protezione dei dati personali:"
+msgstr "You may also lodge a complaint with the Italian Data Protection Authority:"
+
+msgid "Chiudi"
+msgstr "Close"
+
+msgid "Offrimi un caffè"
+msgstr "Buy me a coffee"
+
+msgid "Ti piace TaskPlanner? Sostieni lo sviluppo"
+msgstr "Enjoying TaskPlanner? Support its development"

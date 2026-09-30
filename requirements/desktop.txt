@@ -1,0 +1,16 @@
+-r base.txt
+
+# Finestra nativa (WebKit su macOS, WebView2 su Windows, Qt/WebEngine su Linux)
+pywebview>=5.0
+
+# Linux: backend Qt (QtWebEngine) al posto di GTK+WebKit2GTK — i binding gi/GTK
+# usano introspection dinamica che PyInstaller non riesce a bundlare in un
+# eseguibile standalone; PySide6 è invece un pacchetto pip auto-contenuto.
+qtpy>=2.4; sys_platform == "linux"
+PySide6>=6.5; sys_platform == "linux"
+
+# Directory dati cross-platform (%APPDATA%, ~/Library/Application Support, ~/.local/share)
+platformdirs>=4.1
+
+# Packaging standalone
+pyinstaller>=6.0

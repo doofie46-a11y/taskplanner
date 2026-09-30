@@ -1,0 +1,152 @@
+name: Desktop Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # ── Windows ───────────────────────────────────────────────────────────────
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements/desktop.txt
+          pip install pillow
+
+      - name: Generate icons
+        run: python desktop/make_icons.py
+
+      - name: Build with PyInstaller
+        run: pyinstaller taskplanner_desktop.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskPlanner-windows
+          path: dist/TaskPlanner.exe
+
+  # ── macOS ─────────────────────────────────────────────────────────────────
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements/desktop.txt
+          pip install pillow
+
+      - name: Generate icons
+        run: |
+          python desktop/make_icons.py
+          mkdir -p desktop/icons/taskplanner.iconset
+          for size in 16 32 64 128 256 512; do
+            sips -z $size $size desktop/icons/taskplanner_1024.png \
+              --out desktop/icons/taskplanner.iconset/icon_${size}x${size}.png \
+              > /dev/null 2>&1 || true
+            double=$((size * 2))
+            sips -z $double $double desktop/icons/taskplanner_1024.png \
+              --out desktop/icons/taskplanner.iconset/icon_${size}x${size}@2x.png \
+              > /dev/null 2>&1 || true
+          done
+          iconutil -c icns desktop/icons/taskplanner.iconset \
+            -o desktop/icons/taskplanner.icns 2>/dev/null || true
+
+      - name: Build with PyInstaller
+        run: pyinstaller taskplanner_desktop.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskPlanner-macos
+          path: dist/TaskPlanner
+
+  # ── Linux ─────────────────────────────────────────────────────────────────
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements/desktop.txt
+          pip install pillow
+
+      - name: Generate icons
+        run: python desktop/make_icons.py
+
+      - name: Build with PyInstaller
+        run: pyinstaller taskplanner_desktop.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskPlanner-linux
+          path: dist/TaskPlanner
+
+  # ── Release ───────────────────────────────────────────────────────────────
+  release:
+    needs: [build-windows, build-macos, build-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create GitHub Release and attach binaries
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -xe
+          TAG="${{ github.ref_name }}"
+          VER="${TAG#v}"           # v1.4.1 → 1.4.1
+          REPO="${{ github.repository }}"
+
+          # Rinomina con versione: evita basename identici (TaskPlanner) che
+          # causano conflitti sull'upload endpoint di GitHub
+          cp "TaskPlanner-windows/TaskPlanner.exe" "./TaskPlanner-${VER}-windows.exe"
+          cp "TaskPlanner-macos/TaskPlanner"        "./TaskPlanner-${VER}-macos"
+          cp "TaskPlanner-linux/TaskPlanner"        "./TaskPlanner-${VER}-linux"
+          chmod +x "./TaskPlanner-${VER}-macos" "./TaskPlanner-${VER}-linux"
+          ls -lh TaskPlanner-${VER}-*
+
+          # Elimina release esistente (idempotente su retry)
+          gh release delete "$TAG" --repo "$REPO" --yes 2>/dev/null || true
+          sleep 2
+
+          gh release create "$TAG" \
+            --repo "$REPO" \
+            --title "TaskPlanner $TAG" \
+            --notes "Binaries for Windows, macOS and Linux — see the [README](https://github.com/$REPO#download) for first-launch instructions. Enjoying TaskPlanner? [Buy me a coffee ☕](https://ko-fi.com/claudioruffina)" \
+            "./TaskPlanner-${VER}-windows.exe" \
+            "./TaskPlanner-${VER}-macos" \
+            "./TaskPlanner-${VER}-linux"
