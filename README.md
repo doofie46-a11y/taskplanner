@@ -21,16 +21,18 @@ nessun account, nessun cloud. Interfaccia in italiano e inglese.*
 
 ## Download
 
-Get the latest version for Windows, macOS or Linux from the
+Get the latest version for Windows or Linux from the
 [Releases page](https://github.com/doofie46-a11y/taskplanner/releases/latest).
 It is a single executable: no installation needed.
+
+**macOS:** no prebuilt binary for now (I have no Mac to test it on). TaskPlanner runs fine
+[from source](#run-from-source); help testing a macOS build is welcome.
 
 The executables are not code-signed, so the first launch needs one extra step:
 
 | OS | First launch |
 |---|---|
 | Windows | SmartScreen: *More info* → *Run anyway*. Requires the WebView2 runtime (preinstalled on Windows 10 21H2+ and Windows 11) |
-| macOS | `chmod +x TaskPlanner-*-macos`, then right-click → *Open* (or `xattr -d com.apple.quarantine TaskPlanner-*-macos`) |
 | Linux | `chmod +x TaskPlanner-*-linux && ./TaskPlanner-*-linux` |
 
 ### Where your data lives

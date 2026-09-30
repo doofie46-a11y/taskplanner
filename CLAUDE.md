@@ -9,7 +9,7 @@ Supporta **due target di deployment**:
 | Target | Auth | DB | Entry point | Distribuzione |
 |---|---|---|---|---|
 | **Server** | Google OAuth | PostgreSQL | `app_server.py` | systemd + gunicorn |
-| **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Mac/Linux) |
+| **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
 **Versione corrente:** `1.5.0 "Aglianico"`
 
@@ -138,7 +138,7 @@ Le traduzioni (`translations/`) sono bundlate come dati; i template Python sono 
 git tag v1.X.Y
 git push origin v1.X.Y
 ```
-4. Il workflow `.github/workflows/desktop_release.yml` builda in parallelo Windows, macOS e Linux e crea automaticamente la GitHub Release con i tre eseguibili allegati.
+4. Il workflow `.github/workflows/desktop_release.yml` builda in parallelo Windows e Linux e crea automaticamente la GitHub Release con i due eseguibili allegati. Build macOS sospesa dal 2026-09-30 (nessun Mac per testarla; usciva un eseguibile nudo, non un `.app`, solo Apple Silicon): il job è recuperabile dal commit iniziale `8b855ff`.
 5. Verifica su `github.com/doofie46-a11y/taskplanner/releases` che la release sia comparsa (~5-10 min).
 
 **Regola versioning:** patch (`.Z`) per bugfix e traduzioni — minor (`.Y`) per nuove funzionalità.
