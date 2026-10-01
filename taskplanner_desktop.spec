@@ -72,6 +72,8 @@ a = Analysis(
         "jinja2", "jinja2.ext", "markupsafe",
         # i18n
         "babel", "babel.dates", "babel.numbers",
+        # fusi orari: zoneinfo importa tzdata dinamicamente (assente su Windows)
+        "tzdata",
         # stdlib usati a runtime
         "sqlite3", "zoneinfo", "email.mime.text",
         # platformdirs

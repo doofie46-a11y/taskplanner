@@ -35,6 +35,10 @@ jobs:
       - name: Build with PyInstaller
         run: pyinstaller taskplanner_desktop.spec
 
+      - name: Verify bundled timezone data
+        shell: bash
+        run: pyi-archive_viewer -r -b dist/TaskPlanner.exe | grep -E 'tzdata.zoneinfo.Europe.Rome'
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -64,6 +68,10 @@ jobs:
 
       - name: Build with PyInstaller
         run: pyinstaller taskplanner_desktop.spec
+
+      - name: Verify bundled timezone data
+        shell: bash
+        run: pyi-archive_viewer -r -b dist/TaskPlanner | grep -E 'tzdata.zoneinfo.Europe.Rome'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
