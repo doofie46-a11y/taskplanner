@@ -75,12 +75,14 @@ def run() -> None:
     # sistema, non dentro la finestra dell'app
     webview.settings["OPEN_EXTERNAL_LINKS_IN_BROWSER"] = True
 
+    from desktop.notify import DesktopApi
     webview.create_window(
         "TaskPlanner",
         url,
         width=1280,
         height=800,
         min_size=(800, 600),
+        js_api=DesktopApi(),
     )
     # Su Linux forziamo il backend Qt (QtWebEngine/PySide6): GTK+WebKit2GTK
     # richiede binding gi legati a librerie di sistema che l'eseguibile

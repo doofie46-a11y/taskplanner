@@ -78,6 +78,7 @@ taskplanner/
 │   ├── auth.py                # auto-login utente locale
 │   ├── config.py              # SQLITE_PATH (pathlib.Path), DATA_DIR cross-platform
 │   ├── routes_outlook.py      # /outlook/crea_evento, /outlook/crea_attivita (win32com)
+│   ├── notify.py              # DesktopApi (js_api pywebview): notifiche native via plyer
 │   └── launcher.py            # apre browser in --app mode, avvia Flask su thread
 │
 ├── app_server.py              # entrypoint server (gunicorn: app_server:app)
@@ -385,6 +386,7 @@ Per aggiungere una nuova lingua:
 
 ### Desktop only
 - `pyinstaller`, `pystray`
+- `plyer` — notifiche native: la finestra pywebview nega la Notification API web, quindi in desktop il JS chiama `window.pywebview.api.notify()` (flag Jinja `is_desktop`)
 - `win32com` (stdlib Windows) — solo per integrazione Outlook, import condizionale
 
 ---

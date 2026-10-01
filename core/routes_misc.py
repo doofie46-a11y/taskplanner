@@ -252,14 +252,14 @@ self.addEventListener('notificationclick', e => {
     @app.route("/pwa-icon-192.png")
     def pwa_icon_192():
         return send_from_directory(
-            os.path.join(current_app.config['BUNDLE_DIR'], "taskplanner-pwa"),
+            os.path.join(current_app.config['BUNDLE_DIR'], "pwa"),
             "icon-192.png", mimetype="image/png",
         )
 
     @app.route("/pwa-icon-512.png")
     def pwa_icon_512():
         return send_from_directory(
-            os.path.join(current_app.config['BUNDLE_DIR'], "taskplanner-pwa"),
+            os.path.join(current_app.config['BUNDLE_DIR'], "pwa"),
             "icon-512.png", mimetype="image/png",
         )
 

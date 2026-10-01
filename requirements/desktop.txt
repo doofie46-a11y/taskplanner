@@ -13,6 +13,9 @@ PySide6>=6.5; sys_platform == "linux"
 # questo pacchetto ZoneInfo("Europe/Rome") fallisce all'avvio dell'eseguibile
 tzdata>=2024.1
 
+# Notifiche native (la finestra pywebview non supporta le notifiche web)
+plyer>=2.1
+
 # Directory dati cross-platform (%APPDATA%, ~/Library/Application Support, ~/.local/share)
 platformdirs>=4.1
 

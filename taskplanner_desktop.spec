@@ -32,7 +32,13 @@ def _resolve_icon():
 # sono compilati nella PYZ e non richiedono trattamento speciale.
 datas = [
     (str(root / "translations"), "translations"),
+    # favicon e icone PWA servite da core/routes_misc.py (anche come icona notifiche)
+    (str(root / "favicon.ico"), "."),
+    (str(root / "pwa"), "pwa"),
 ]
+# Icona .ico per le notifiche native Windows (desktop/notify.py)
+if sys.platform == "win32" and (root / "desktop" / "icons" / "taskplanner.ico").exists():
+    datas.append((str(root / "desktop" / "icons" / "taskplanner.ico"), "desktop/icons"))
 
 # ── Backend finestra Linux (Qt/PySide6) ─────────────────────────────────────
 # pywebview su Linux importa gi/GTK oppure qtpy/PySide6 dinamicamente (try/
@@ -65,7 +71,7 @@ a = Analysis(
         "core.templates.cestino", "core.templates.login", "core.templates.outlook",
         # desktop adapter
         "desktop", "desktop.auth", "desktop.config", "desktop.db",
-        "desktop.launcher",
+        "desktop.launcher", "desktop.notify",
         # flask stack
         "flask", "flask.templating", "flask_babel", "flask_login",
         "werkzeug", "werkzeug.serving", "werkzeug.routing",
@@ -78,6 +84,12 @@ a = Analysis(
         "sqlite3", "zoneinfo", "email.mime.text",
         # platformdirs
         "platformdirs",
+        # notifiche native: plyer carica il backend di piattaforma dinamicamente
+        "plyer", "plyer.facades", "plyer.platforms",
+        "plyer.platforms.win", "plyer.platforms.win.notification",
+        "plyer.platforms.win.libs", "plyer.platforms.win.libs.balloontip",
+        "plyer.platforms.win.libs.win_api_defs",
+        "plyer.platforms.linux", "plyer.platforms.linux.notification",
     ] + linux_hidden,
     excludes=[
         # server-only — non devono finire nel bundle desktop
