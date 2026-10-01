@@ -82,12 +82,13 @@ def run() -> None:
         width=1280,
         height=800,
         min_size=(800, 600),
-        js_api=DesktopApi(),
+        js_api=DesktopApi(app.logger),
     )
     # Su Linux forziamo il backend Qt (QtWebEngine/PySide6): GTK+WebKit2GTK
     # richiede binding gi legati a librerie di sistema che l'eseguibile
     # PyInstaller standalone non porta con sé.
     gui = "qt" if sys.platform.startswith("linux") else None
-    webview.start(gui=gui)
+    # TASKPLANNER_DEBUG=1 abilita gli strumenti sviluppatore (F12 / tasto destro → Ispeziona)
+    webview.start(gui=gui, debug=os.environ.get("TASKPLANNER_DEBUG") == "1")
     # webview.start() ritorna solo quando tutte le finestre sono chiuse.
     # Il thread Flask è daemon → il processo termina normalmente qui.

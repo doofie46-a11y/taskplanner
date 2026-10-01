@@ -25,7 +25,12 @@ def _icona() -> str:
 class DesktopApi:
     """Metodi chiamabili da JS come window.pywebview.api.<nome>()."""
 
+    def __init__(self, logger=None):
+        # logger dell'app Flask: è l'unico con l'handler su taskplanner.log
+        self._log = logger or log
+
     def notify(self, titolo: str, messaggio: str) -> bool:
+        self._log.info("Notifica desktop: %s — %s", titolo, messaggio)
         try:
             from plyer import notification
             notification.notify(
@@ -38,5 +43,9 @@ class DesktopApi:
             return True
         except Exception:
             # Notifica persa ma l'app continua: niente popup d'errore all'utente
-            log.exception("Notifica desktop non inviata")
+            self._log.exception("Notifica desktop non inviata")
             return False
+
+    def log_js(self, messaggio: str) -> None:
+        """Errori lato pagina: nella finestra desktop non c'è una console visibile."""
+        self._log.warning("JS: %s", messaggio)
