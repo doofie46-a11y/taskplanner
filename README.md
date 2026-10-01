@@ -81,7 +81,7 @@ and translated in `translations/en/LC_MESSAGES/messages.po` (Italian is the sour
 
 ## Support
 
-If TaskPlanner is useful to you, you can [buy me a coffee ☕](https://ko-fi.com/claudioruffina).
+If TaskPlanner is useful to you, you can [buy me a beer 🍺](https://ko-fi.com/claudioruffina).
 
 ## License
 

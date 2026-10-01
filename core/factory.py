@@ -21,7 +21,7 @@ from werkzeug.exceptions import HTTPException
 APP_VERSION  = '1.5.0'
 APP_CODENAME = 'Aglianico'
 
-# Link "offrimi un caffè" mostrato in sidebar e changelog (vuoto = nascosto).
+# Link "offrimi una birra" mostrato in sidebar e changelog (vuoto = nascosto).
 # Override via env TASKPLANNER_SUPPORT_URL.
 SUPPORT_URL = 'https://ko-fi.com/claudioruffina'
 

@@ -113,6 +113,6 @@ jobs:
           gh release create "$TAG" \
             --repo "$REPO" \
             --title "TaskPlanner $TAG" \
-            --notes "Binaries for Windows and Linux — see the [README](https://github.com/$REPO#download) for first-launch instructions. Enjoying TaskPlanner? [Buy me a coffee ☕](https://ko-fi.com/claudioruffina)" \
+            --notes "Binaries for Windows and Linux — see the [README](https://github.com/$REPO#download) for first-launch instructions. Enjoying TaskPlanner? [Buy me a beer 🍺](https://ko-fi.com/claudioruffina)" \
             "./TaskPlanner-${VER}-windows.exe" \
             "./TaskPlanner-${VER}-linux"

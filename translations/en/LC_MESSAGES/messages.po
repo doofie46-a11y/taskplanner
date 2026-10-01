@@ -951,8 +951,8 @@ msgstr "You may also lodge a complaint with the Italian Data Protection Authorit
 msgid "Chiudi"
 msgstr "Close"
 
-msgid "Offrimi un caffè"
-msgstr "Buy me a coffee"
+msgid "Offrimi una birra"
+msgstr "Buy me a beer"
 
 msgid "Ti piace TaskPlanner? Sostieni lo sviluppo"
 msgstr "Enjoying TaskPlanner? Support its development"
