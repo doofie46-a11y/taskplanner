@@ -16,10 +16,10 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
 
@@ -40,7 +40,7 @@ jobs:
         run: pyi-archive_viewer -r -b dist/TaskPlanner.exe | grep -E 'tzdata.zoneinfo.Europe.Rome'
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: TaskPlanner-windows
           path: dist/TaskPlanner.exe
@@ -48,12 +48,14 @@ jobs:
 
   # ── Linux ─────────────────────────────────────────────────────────────────
   build-linux:
-    runs-on: ubuntu-latest
+    # Versione fissa, non ubuntu-latest: il binario richiede una glibc almeno pari
+    # a quella della macchina di build, e una più vecchia lo fa girare su più distro
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
 
@@ -74,7 +76,7 @@ jobs:
         run: pyi-archive_viewer -r -b dist/TaskPlanner | grep -E 'tzdata.zoneinfo.Europe.Rome'
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: TaskPlanner-linux
           path: dist/TaskPlanner
@@ -88,7 +90,7 @@ jobs:
       contents: write
     steps:
       - name: Download all build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
 
       - name: Create GitHub Release and attach binaries
         env:
