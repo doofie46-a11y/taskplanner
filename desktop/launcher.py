@@ -11,6 +11,35 @@ import time
 import requests
 
 
+def _fix_download_qt(logger):
+    """Sostituisce il gestore download del backend Qt di pywebview.
+
+    Quello originale propone come nome il percorso dell'URL ("export") invece del
+    nome dato dal server, e usa setPath(), che in Qt 6 non esiste più: il download
+    restava a metà come file temporaneo .org.chromium.Chromium.* in Scaricati.
+    """
+    from qtpy.QtWidgets import QFileDialog
+    from webview.platforms import qt
+
+    def on_download_requested(self, download):
+        try:
+            proposto = os.path.join(download.downloadDirectory(), download.downloadFileName())
+            path, _ = QFileDialog.getSaveFileName(self, self.localization["global.saveFile"], proposto)
+            if not path:
+                download.cancel()
+                return
+            download.setDownloadDirectory(os.path.dirname(path))
+            download.setDownloadFileName(os.path.basename(path))
+            download.accept()
+            logger.info("Download salvato in %s", path)
+        except Exception:
+            # Le eccezioni negli slot Qt si perderebbero: le registriamo noi
+            logger.exception("Download non riuscito")
+            download.cancel()
+
+    qt.BrowserView.on_download_requested = on_download_requested
+
+
 def _free_port() -> int:
     """Trova una porta TCP libera lasciando al kernel la scelta."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -91,6 +120,8 @@ def run() -> None:
     # richiede binding gi legati a librerie di sistema che l'eseguibile
     # PyInstaller standalone non porta con sé.
     gui = "qt" if sys.platform.startswith("linux") else None
+    if gui == "qt":
+        _fix_download_qt(app.logger)
     # TASKPLANNER_DEBUG=1 abilita gli strumenti sviluppatore (F12 / tasto destro → Ispeziona)
     webview.start(gui=gui, debug=os.environ.get("TASKPLANNER_DEBUG") == "1")
     # webview.start() ritorna solo quando tutte le finestre sono chiuse.
