@@ -74,6 +74,9 @@ def run() -> None:
     # Link con target="_blank" (es. Ko-fi, changelog GitHub) nel browser di
     # sistema, non dentro la finestra dell'app
     webview.settings["OPEN_EXTERNAL_LINKS_IN_BROWSER"] = True
+    # Export e allegati arrivano come download (Content-Disposition: attachment):
+    # pywebview li annulla in silenzio se non abilitati, così chiede dove salvarli
+    webview.settings["ALLOW_DOWNLOADS"] = True
 
     from desktop.notify import DesktopApi
     webview.create_window(
