@@ -28,18 +28,41 @@ It is a single executable: no installation needed.
 **macOS:** no prebuilt binary for now (I have no Mac to test it on). TaskPlanner runs fine
 [from source](#run-from-source); help testing a macOS build is welcome.
 
-The executables are not code-signed, so the first launch needs one extra step:
-
 | OS | First launch |
 |---|---|
-| Windows | SmartScreen: *More info* → *Run anyway*. Requires the WebView2 runtime (preinstalled on Windows 10 21H2+ and Windows 11) |
+| Windows | See [Windows SmartScreen](#windows-smartscreen) below. Requires the WebView2 runtime (preinstalled on Windows 10 21H2+ and Windows 11) |
 | Linux | `chmod +x TaskPlanner-*-linux && ./TaskPlanner-*-linux` |
+
+### Windows SmartScreen
+
+The Windows executable is not code-signed yet, so on first launch Windows may show
+*"Windows protected your PC"* with *Unknown publisher*. This warning appears for any new
+unsigned program, not because something was detected in it. Click **More info** →
+**Run anyway**; Windows will not ask again for that file.
+
+If you prefer to check the file first, [verify its checksum](#verify-the-download) or
+[run TaskPlanner from source](#run-from-source).
+
+### Verify the download
+
+Every release includes a `SHA256SUMS.txt` file with the SHA-256 checksum of each executable,
+computed by the same GitHub Actions run that built them. Compare it with your download:
+
+```powershell
+# Windows (PowerShell)
+Get-FileHash .\TaskPlanner-*-windows.exe -Algorithm SHA256
+```
+
+```bash
+# Linux (in the download folder, with SHA256SUMS.txt next to the executable)
+sha256sum --check --ignore-missing SHA256SUMS.txt
+```
 
 ### Where your data lives
 
 | OS | Folder |
 |---|---|
-| Windows | `%APPDATA%\TaskPlanner\TaskPlanner\` |
+| Windows | `%LOCALAPPDATA%\TaskPlanner\TaskPlanner\` |
 | macOS | `~/Library/Application Support/TaskPlanner/` |
 | Linux | `~/.local/share/TaskPlanner/` |
 
