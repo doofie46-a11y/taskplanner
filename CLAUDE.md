@@ -163,7 +163,7 @@ git push origin v1.X.Y
 - `CursorAdapter` normalizza automaticamente: `%s`→`?`, `RETURNING id`→`lastrowid`, `ON CONFLICT ... DO NOTHING`→`INSERT OR IGNORE`
 - Per `NOW()` nelle UPDATE/INSERT usare `db.now_expr()` in f-string: `f"UPDATE ... SET ts={db.now_expr()}"`
 - Path cross-platform: usare `pathlib.Path` e `os.path.join`, mai stringhe con `/` hardcoded
-- Pomodoro timer: **rimosso** (non migrato — funzione non usata)
+- Pomodoro timer: **rimosso** (backend non migrato; tolta anche l'interfaccia rimasta, che chiamava `/pomodoro/*` inesistenti)
 - Timezone default: `Europe/Rome`; configurabile via `app.config['TIMEZONE']`
 
 ---

@@ -536,9 +536,6 @@ msgstr "Pin"
 msgid "Unpin"
 msgstr "Unpin"
 
-msgid "Pomodoro"
-msgstr "Pomodoro"
-
 msgid "Outlook"
 msgstr "Outlook"
 
@@ -599,23 +596,7 @@ msgstr "Reminder time"
 msgid "Crea in Outlook"
 msgstr "Create in Outlook"
 
-# ── Pomodoro widget
-msgid "Lavoro"
-msgstr "Work"
-
-msgid "timer attivo"
-msgstr "timer active"
-
-msgid "Stop"
-msgstr "Stop"
-
 # ── Title attributes
-msgid "Avvia timer Pomodoro"
-msgstr "Start Pomodoro timer"
-
-msgid "Avvia timer Pomodoro senza task"
-msgstr "Start Pomodoro timer without task"
-
 msgid "Elimina allegato"
 msgstr "Delete attachment"
 
