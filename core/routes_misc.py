@@ -10,6 +10,14 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.5.2",
+        "codename": "Ripasso di Valpolicella",
+        "date": "2026-10-05",
+        "notes": [
+            "🌍 Interfaccia inglese: priorità, tooltip di escalation, statistiche e bilancio Contaschei non mostrano più testi in italiano",
+        ]
+    },
+    {
         "version": "1.5.1",
         "codename": "Ripasso di Valpolicella",
         "date": "2026-10-05",

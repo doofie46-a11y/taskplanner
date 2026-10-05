@@ -11,7 +11,7 @@ Supporta **due target di deployment**:
 | **Server** | Google OAuth | PostgreSQL | `app_server.py` | systemd + gunicorn |
 | **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
-**Versione corrente:** `1.5.1 "Ripasso di Valpolicella"`
+**Versione corrente:** `1.5.2 "Ripasso di Valpolicella"`
 
 **Licenza:** GPL-3.0 (`LICENSE`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 
