@@ -49,7 +49,18 @@ It is a single executable: no installation needed.
 The Windows executable is not code-signed yet, so on first launch Windows may show
 *"Windows protected your PC"* with *Unknown publisher*. This warning appears for any new
 unsigned program, not because something was detected in it. Click **More info** →
-**Run anyway**; Windows will not ask again for that file.
+**Run anyway**.
+
+Windows may also show an *"Open File – Security Warning"* saying the publisher could not
+be verified, every time you start the program. To stop it, unblock the file once:
+right-click it → **Properties** → check **Unblock** → **OK** (or untick *"Always ask before
+opening this file"* in the warning). From PowerShell:
+
+```powershell
+Unblock-File .\TaskPlanner-*-windows.exe
+```
+
+Each new version you download is a new file, so you will need to do this again.
 
 If you prefer to check the file first, [verify its checksum](#verify-the-download) or
 [run TaskPlanner from source](#run-from-source).
