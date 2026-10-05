@@ -18,8 +18,8 @@ from flask_babel import Babel
 from flask_login import LoginManager
 from werkzeug.exceptions import HTTPException
 
-APP_VERSION  = '1.5.0'
-APP_CODENAME = 'Aglianico'
+APP_VERSION  = '1.5.1'
+APP_CODENAME = 'Ripasso di Valpolicella'
 
 # Link "offrimi una birra" mostrato in sidebar e changelog (vuoto = nascosto).
 # Override via env TASKPLANNER_SUPPORT_URL.

@@ -10,6 +10,18 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.5.1",
+        "codename": "Ripasso di Valpolicella",
+        "date": "2026-10-05",
+        "notes": [
+            "🔔 Desktop Windows: notifiche native (toast) anche con la finestra in secondo piano",
+            "💾 Desktop: l'export salva il file nella cartella scelta (Windows e Linux)",
+            "🚪 Desktop: tolto il pulsante di logout, che non serviva",
+            "🍅 Tolto il timer Pomodoro, che non funzionava in modo affidabile",
+            "🔐 Download verificabili: checksum SHA-256 e attestazione di provenienza per ogni eseguibile",
+        ]
+    },
+    {
         "version": "1.5.0",
         "codename": "Aglianico",
         "date": "2026-09-10",
