@@ -937,3 +937,6 @@ msgstr "Buy me a beer"
 
 msgid "Ti piace TaskPlanner? Sostieni lo sviluppo"
 msgstr "Enjoying TaskPlanner? Support its development"
+
+msgid "Escalation: base %(base)s, +%(livelli)s livello/i (%(giorni)s gg di ritardo)"
+msgstr "Escalation: base %(base)s, +%(livelli)s level(s) (%(giorni)s days late)"

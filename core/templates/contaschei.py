@@ -654,7 +654,7 @@ TEMPLATE_CONTASCHEI_BILANCIO = '''
         {% set max_val = by_category | map(attribute=3) | max %}
         {% for name, color, tipo, tot in by_category %}
         <div class="bar-row">
-            <div class="bar-label" title="{{ name }}">{{ name }}</div>
+            <div class="bar-label" title="{{ name or _("Nessuna tipologia") }}">{{ name or _("Nessuna tipologia") }}</div>
             <div class="bar-track">
                 <div class="bar-fill" style="width:{{ (tot / max_val * 100) | round | int }}%; background:{{ color or (
                     '#28a745' if tipo == 'income' else '#dc3545') }};"></div>

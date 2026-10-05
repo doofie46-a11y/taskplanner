@@ -514,7 +514,7 @@ def register(app):
 
             by_category = {}
             for o in occurrences:
-                key = (o["categoria"] or "Nessuna tipologia", o["color"], o["tipo"])
+                key = (o["categoria"], o["color"], o["tipo"])  # None → "Nessuna tipologia" tradotto nel template
                 by_category[key] = by_category.get(key, 0) + o["amount"]
             by_category_list = sorted(
                 [(name, color, tipo, round(tot, 2)) for (name, color, tipo), tot in by_category.items()],
