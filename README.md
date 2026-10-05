@@ -69,6 +69,30 @@ sha256sum --check --ignore-missing SHA256SUMS.txt
 The database (`taskplanner.db`, SQLite) and attachments are in that folder: back it up to keep your data safe.
 Set `TASKPLANNER_DATA=/some/path` to use a different folder.
 
+### Uninstall
+
+TaskPlanner does not install anything: delete the executable, and delete the data folder
+above if you also want to remove your tasks.
+
+## Privacy
+
+TaskPlanner has no telemetry, no analytics and no update checks. The desktop app does not
+connect to the internet on its own: your data stays in the local folder above. A web page
+opens only when you click a link (the Ko-fi page, or Google Calendar when you add a task
+to it). The Outlook integration talks only to the Outlook installed on your PC.
+
+In [server mode](#server-mode) the data lives on the server of whoever runs it, and sign-in
+goes through Google.
+
+## Code signing policy
+
+The Windows executable is not signed yet: free code signing from
+[SignPath Foundation](https://signpath.org) has been requested. Signed releases will be
+built only by the GitHub Actions workflow in this repository, from its own source code.
+
+- Committers and reviewers: [doofie46-a11y](https://github.com/doofie46-a11y)
+- Approver (authorizes each signed release): [doofie46-a11y](https://github.com/doofie46-a11y)
+
 ## Run from source
 
 Requires Python 3.11+.

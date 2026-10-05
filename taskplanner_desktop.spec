@@ -27,6 +27,38 @@ def _resolve_icon():
     return str(path) if path.exists() else None
 
 
+# ── Metadati versione (Windows) ───────────────────────────────────────────
+# Nome prodotto e versione nelle proprietà dell'exe: SignPath li richiede per
+# la firma, e sono quelli che Windows mostra in Proprietà → Dettagli.
+def _version_info():
+    if sys.platform != "win32":
+        return None
+    import re
+    from PyInstaller.utils.win32.versioninfo import (
+        FixedFileInfo, StringFileInfo, StringStruct, StringTable,
+        VarFileInfo, VarStruct, VSVersionInfo,
+    )
+    ver = re.search(r"APP_VERSION\s*=\s*'([\d.]+)'",
+                    (root / "core" / "factory.py").read_text(encoding="utf-8")).group(1)
+    nums = tuple(int(x) for x in (ver.split(".") + ["0"] * 4)[:4])
+    return VSVersionInfo(
+        ffi=FixedFileInfo(filevers=nums, prodvers=nums),
+        kids=[
+            StringFileInfo([StringTable("040904B0", [
+                StringStruct("CompanyName", "TaskPlanner"),
+                StringStruct("FileDescription", "TaskPlanner"),
+                StringStruct("FileVersion", ver),
+                StringStruct("InternalName", "TaskPlanner"),
+                StringStruct("LegalCopyright", "GNU GPL v3.0"),
+                StringStruct("OriginalFilename", "TaskPlanner.exe"),
+                StringStruct("ProductName", "TaskPlanner"),
+                StringStruct("ProductVersion", ver),
+            ])]),
+            VarFileInfo([VarStruct("Translation", [0x0409, 1200])]),
+        ],
+    )
+
+
 # ── Dati da bundlare ────────────────────────────────────────────────────────
 # Le traduzioni (.mo) devono essere incluse come data file; i template Python
 # sono compilati nella PYZ e non richiedono trattamento speciale.
@@ -126,5 +158,6 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=_resolve_icon(),
+    version=_version_info(),
     onefile=True,
 )

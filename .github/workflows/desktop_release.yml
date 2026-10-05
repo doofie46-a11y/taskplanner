@@ -39,6 +39,13 @@ jobs:
         shell: bash
         run: pyi-archive_viewer -r -b dist/TaskPlanner.exe | grep -E 'tzdata.zoneinfo.Europe.Rome'
 
+      - name: Verify version metadata
+        shell: pwsh
+        run: |
+          $v = (Get-Item dist/TaskPlanner.exe).VersionInfo
+          "ProductName=$($v.ProductName) ProductVersion=$($v.ProductVersion)"
+          if ($v.ProductName -ne 'TaskPlanner' -or -not $v.ProductVersion) { exit 1 }
+
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
