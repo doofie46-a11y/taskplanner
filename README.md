@@ -6,6 +6,8 @@ no account, no cloud, no tracking.
 *🇮🇹 Pianificatore di attività giornaliere per desktop: i dati restano sul tuo computer,
 nessun account, nessun cloud. Interfaccia in italiano e inglese.*
 
+![TaskPlanner daily view](docs/screenshots/daily.png)
+
 ## Features
 
 - **Daily view** with priorities, times, pinned tasks and custom card colors
@@ -18,6 +20,15 @@ nessun account, nessun cloud. Interfaccia in italiano e inglese.*
 - **Contaschei**: a small personal income/expense tracker with recurring entries and period reports
 - **Dark mode**, Italian and English UI
 - **Outlook integration** on Windows (create events and tasks)
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Daily view in dark mode](docs/screenshots/daily-dark.png) | ![Recurring task settings](docs/screenshots/recurring-task.png) |
+| *Daily view, dark mode* | *Recurring task with escalation* |
+| ![Statistics](docs/screenshots/statistics.png) | ![Contaschei income and expenses](docs/screenshots/contaschei.png) |
+| *Statistics* | *Contaschei: income and expenses* |
 
 ## Download
 
