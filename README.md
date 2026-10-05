@@ -116,8 +116,8 @@ goes through Google.
 
 ## Code signing policy
 
-The Windows executable is not signed yet: free code signing from
-[SignPath Foundation](https://signpath.org) has been requested. Signed releases will be
+The Windows executable is not code-signed yet. We plan to apply for free code signing from
+[SignPath Foundation](https://signpath.org) as the project grows. Signed releases will be
 built only by the GitHub Actions workflow in this repository, from its own source code.
 
 - Committers and reviewers: [doofie46-a11y](https://github.com/doofie46-a11y)
