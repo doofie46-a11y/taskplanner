@@ -58,6 +58,14 @@ Get-FileHash .\TaskPlanner-*-windows.exe -Algorithm SHA256
 sha256sum --check --ignore-missing SHA256SUMS.txt
 ```
 
+Each executable also has a signed [build provenance attestation](https://docs.github.com/actions/security-for-github-actions/using-artifact-attestations)
+that ties it to this repository and to the exact commit and workflow run that built it.
+With the [GitHub CLI](https://cli.github.com):
+
+```bash
+gh attestation verify TaskPlanner-<version>-linux --repo doofie46-a11y/taskplanner
+```
+
 ### Where your data lives
 
 | OS | Folder |

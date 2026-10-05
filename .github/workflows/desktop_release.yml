@@ -95,18 +95,17 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write      # firma Sigstore dell'attestazione
+      attestations: write
     steps:
       - name: Download all build artifacts
         uses: actions/download-artifact@v8
 
-      - name: Create GitHub Release and attach binaries
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare release files
         run: |
           set -xe
           TAG="${{ github.ref_name }}"
           VER="${TAG#v}"           # v1.4.1 → 1.4.1
-          REPO="${{ github.repository }}"
 
           # Rinomina con versione: evita basename identici (TaskPlanner) che
           # causano conflitti sull'upload endpoint di GitHub
@@ -118,6 +117,22 @@ jobs:
           # Checksum per verificare il download (istruzioni nel README)
           sha256sum "TaskPlanner-${VER}-windows.exe" "TaskPlanner-${VER}-linux" > SHA256SUMS.txt
           cat SHA256SUMS.txt
+
+      # Attestazione di provenienza (SLSA, firmata con Sigstore): lega ogni
+      # eseguibile a questo repository, commit e run. Verifica nel README.
+      - name: Attest build provenance
+        uses: actions/attest@v4
+        with:
+          subject-checksums: SHA256SUMS.txt
+
+      - name: Create GitHub Release and attach binaries
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -xe
+          TAG="${{ github.ref_name }}"
+          VER="${TAG#v}"
+          REPO="${{ github.repository }}"
 
           # Elimina release esistente (idempotente su retry)
           gh release delete "$TAG" --repo "$REPO" --yes 2>/dev/null || true
