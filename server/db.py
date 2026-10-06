@@ -150,6 +150,12 @@ def init_db(app):
             )
         c.execute("ALTER TABLE categories ADD COLUMN IF NOT EXISTS group_name TEXT DEFAULT NULL")
         c.execute("ALTER TABLE tasks      ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP DEFAULT NULL")
+        # Login locale (1.6.0): utenti senza account Google, password hashata
+        c.execute("ALTER TABLE users ALTER COLUMN google_id DROP NOT NULL")
+        c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS username      TEXT UNIQUE")
+        c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT")
+        c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_logins INTEGER NOT NULL DEFAULT 0")
+        c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until  TIMESTAMP")
 
         conn.commit()
         app.logger.info("Database PostgreSQL inizializzato / verificato")

@@ -19,15 +19,19 @@ class User(UserMixin):
 
     Server:  id = PK PostgreSQL, google_id valorizzato, picture da Google
     Desktop: id = '1' (utente locale fisso), google_id = None, picture = None
+    Server con login locale: google_id = None, username valorizzato, has_password = True
     """
 
-    def __init__(self, id, google_id, email, name, picture, api_key):
+    def __init__(self, id, google_id, email, name, picture, api_key,
+                 username=None, has_password=False):
         self.id        = str(id)
         self.google_id = google_id
         self.email     = email
         self.name      = name
         self.picture   = picture
         self.api_key   = api_key
+        self.username  = username
+        self.has_password = bool(has_password)
 
     def __repr__(self):
         return f"<User id={self.id} email={self.email!r}>"

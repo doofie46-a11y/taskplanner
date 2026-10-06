@@ -1,5 +1,5 @@
 """
-Adapter server: PostgreSQL + Google OAuth.
+Adapter server: PostgreSQL + Google OAuth e/o login locale (username e password).
 
 init_app(app, login_manager):
   - Imposta DB_FACTORY e DB_DIALECT
@@ -12,6 +12,8 @@ from server.config import (
     DATABASE_URL,
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
+    GOOGLE_ENABLED,
+    LOCAL_AUTH_ENABLED,
     PRIVACY_CONTACT_EMAIL,
 )
 from server.db import get_connection, init_db
@@ -31,16 +33,26 @@ def init_app(app, login_manager):
     with app.app_context():
         init_db(app)
 
-    # --- OAuth ---
-    from authlib.integrations.flask_client import OAuth
-    oauth = OAuth(app)
-    oauth.register(
-        name="google",
-        client_id=GOOGLE_CLIENT_ID,
-        client_secret=GOOGLE_CLIENT_SECRET,
-        server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
-        client_kwargs={"scope": "openid email profile"},
-    )
+    # --- metodi di login ---
+    if not (GOOGLE_ENABLED or LOCAL_AUTH_ENABLED):
+        raise RuntimeError(
+            "Nessun metodo di login attivo: configura GOOGLE_CLIENT_ID/SECRET "
+            "oppure imposta LOCAL_AUTH=true (vedi .env.example)."
+        )
+    app.config['LOCAL_AUTH_ENABLED']  = LOCAL_AUTH_ENABLED
+    app.config['GOOGLE_AUTH_ENABLED'] = GOOGLE_ENABLED
+
+    oauth = None
+    if GOOGLE_ENABLED:
+        from authlib.integrations.flask_client import OAuth
+        oauth = OAuth(app)
+        oauth.register(
+            name="google",
+            client_id=GOOGLE_CLIENT_ID,
+            client_secret=GOOGLE_CLIENT_SECRET,
+            server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+            client_kwargs={"scope": "openid email profile"},
+        )
 
     # --- Auth routes + user_loader ---
     from server.auth import register as register_auth

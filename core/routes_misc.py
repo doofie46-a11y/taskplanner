@@ -10,6 +10,17 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.6.0",
+        "codename": "Raboso",
+        "date": "2026-10-06",
+        "notes": [
+            "🔑 Server: accesso con username e password, in alternativa o in aggiunta a Google (account creati da riga di comando con python -m server.manage)",
+            "🔒 Server: blocco temporaneo dell'account dopo 5 tentativi di accesso falliti",
+            "🔁 Server: cambio password dall'icona accanto al nome utente",
+            "🎨 Nuova icona per l'eseguibile desktop e la favicon, la stessa dell'app web",
+        ]
+    },
+    {
         "version": "1.5.2",
         "codename": "Ripasso di Valpolicella",
         "date": "2026-10-05",
@@ -236,7 +247,7 @@ def register(app):
     @app.route("/sw.js")
     def pwa_sw():
         sw = r"""
-const CACHE = 'tp-v1';
+const CACHE = 'tp-v2';  // incrementare quando cambiano favicon o icone
 const STATIC = ['/manifest.json', '/pwa-icon-192.png', '/pwa-icon-512.png', '/favicon.ico'];
 self.addEventListener('install', e => {
     e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)));
@@ -297,6 +308,8 @@ self.addEventListener('notificationclick', e => {
         return render_template_string(
             TEMPLATE_PRIVACY,
             privacy_contact=current_app.config.get('PRIVACY_CONTACT_EMAIL', ''),
+            google_auth=current_app.config.get('GOOGLE_AUTH_ENABLED', False),
+            local_auth=current_app.config.get('LOCAL_AUTH_ENABLED', False),
         )
 
     @app.route("/changelog")

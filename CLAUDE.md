@@ -8,10 +8,10 @@ Supporta **due target di deployment**:
 
 | Target | Auth | DB | Entry point | Distribuzione |
 |---|---|---|---|---|
-| **Server** | Google OAuth | PostgreSQL | `app_server.py` | systemd + gunicorn |
+| **Server** | Google OAuth e/o username+password | PostgreSQL | `app_server.py` | systemd + gunicorn |
 | **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
-**Versione corrente:** `1.5.2 "Ripasso di Valpolicella"`
+**Versione corrente:** `1.6.0 "Raboso"`
 
 **Licenza:** GPL-3.0 (`LICENSE`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 
@@ -66,12 +66,14 @@ taskplanner/
 │   ├── export.py              # TEMPLATE_EXPORT, TEMPLATE_CHANGELOG
 │   ├── cestino.py             # TEMPLATE_CESTINO
 │   ├── contaschei.py          # TEMPLATE_CONTASCHEI, TEMPLATE_CONTASCHEI_CATEGORIES, TEMPLATE_CONTASCHEI_BILANCIO
-│   └── login.py               # _LOGIN_PAGE (base, senza provider-specific HTML)
+│   └── login.py               # _LOGIN_PAGE (Google e/o form), _PASSWORD_PAGE (cambio password)
 │
 ├── server/                    # server-only: postgres + google oauth
 │   ├── db.py                  # psycopg2 factory, init_db() PostgreSQL
-│   ├── auth.py                # Google OAuth routes + user loader
-│   └── config.py              # DATABASE_URL, GOOGLE_CLIENT_ID/SECRET, APP_BASE_URL
+│   ├── auth.py                # login (Google OAuth e/o locale), cambio password, user loader
+│   ├── users.py               # account locali: hash password, lockout, categorie default
+│   ├── manage.py              # CLI: python -m server.manage create-user|set-password|list-users
+│   └── config.py              # DATABASE_URL, GOOGLE_CLIENT_ID/SECRET, LOCAL_AUTH, APP_BASE_URL
 │
 ├── desktop/                   # desktop-only: sqlite + local auth
 │   ├── db.py                  # sqlite3 factory, init_db() SQLite
@@ -204,7 +206,13 @@ git push origin v1.X.Y
 `id`, `task_id`, `stored_name`, `original_name`, `uploaded_at`
 
 ### `users` (server only)
-`id`, `google_id`, `email`, `name`, `picture`, `api_key`, `created_at`
+`id`, `google_id` (NULL per account locali), `email`, `name`, `picture`, `api_key`, `created_at`, `username` (UNIQUE, minuscolo), `password_hash` (werkzeug scrypt), `failed_logins`, `locked_until`
+
+### Login locale (dalla 1.6.0)
+- Google attivo se `GOOGLE_CLIENT_ID`+`SECRET` sono impostati; login locale attivo con `LOCAL_AUTH=true`, oppure di default se Google non è configurato. Nessuno dei due → `RuntimeError` all'avvio
+- Niente registrazione pubblica: account creati da CLI (`server/manage.py`)
+- Lockout nel DB (vale con più worker gunicorn): 5 tentativi falliti → bloccato 15 minuti; `set-password` sblocca. Messaggio d'errore unico per credenziali errate/account bloccato/username inesistente (niente enumerazione), hash fittizio verificato anche per username inesistenti
+- CSRF token in sessione sui form di login e cambio password (il resto dell'app non ha CSRF)
 
 ### `movement_categories` (Contaschei)
 `id`, `user_id`, `name`, `type` (`income`/`expense`), `color` (HEX)
@@ -268,7 +276,8 @@ Nessun soft-delete: `DELETE` diretto (stesso pattern di `delete_category()`).
 | `/contaschei/categories/update/<cid>` | POST | contaschei | Aggiorna tipologia (blocca cambio `type` se ha movimenti collegati) |
 | `/contaschei/categories/delete/<cid>` | POST | contaschei | Elimina tipologia (`category_id=NULL` sui movimenti collegati) |
 | `/contaschei/bilancio` | GET | contaschei | Bilancio per periodo (mese/bimestre/trimestre/quadrimestre/semestre/anno), filtri tipo/tipologia |
-| `/login` | GET | auth | Pagina login |
+| `/login` | GET/POST | auth | Pagina login; POST = login locale (server) |
+| `/account/password` | GET/POST | auth | (server, solo account locali) Cambio password |
 | `/logout` | POST | auth | Logout |
 | `/auth/google/login` | GET | auth | (server only) Avvia OAuth |
 | `/auth/google/callback` | GET | auth | (server only) Callback OAuth |

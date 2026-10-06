@@ -148,8 +148,24 @@ Releases are built automatically by GitHub Actions for all three platforms when 
 
 ## Server mode
 
-The same codebase can also run as a multi-user web app (PostgreSQL + Google sign-in) with
+The same codebase can also run as a multi-user web app (PostgreSQL) with
 `gunicorn app_server:app`. See `.env.example` for the required settings.
+
+Users sign in with Google, with a username and password, or both:
+
+- **Google**: set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+- **Username and password**: enabled automatically when Google is not configured, or with
+  `LOCAL_AUTH=true` next to Google. There is no public sign-up: accounts are created from the
+  command line, with the same environment variables as the server:
+
+  ```bash
+  python -m server.manage create-user mario --name "Mario Rossi"
+  python -m server.manage set-password mario   # reset a forgotten password, also unlocks
+  python -m server.manage list-users
+  ```
+
+  Passwords are stored as salted hashes. After 5 wrong attempts an account is locked for
+  15 minutes. Users can change their password from the key icon next to their name.
 
 ## Contributing
 

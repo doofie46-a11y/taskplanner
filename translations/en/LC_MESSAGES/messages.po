@@ -940,3 +940,54 @@ msgstr "Enjoying TaskPlanner? Support its development"
 
 msgid "Escalation: base %(base)s, +%(livelli)s livello/i (%(giorni)s gg di ritardo)"
 msgstr "Escalation: base %(base)s, +%(livelli)s level(s) (%(giorni)s days late)"
+
+msgid "Accedi per continuare."
+msgstr "Sign in to continue."
+
+msgid "Accedi con il tuo username e la tua password."
+msgstr "Sign in with your username and password."
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "oppure"
+msgstr "or"
+
+msgid "Cambia password"
+msgstr "Change password"
+
+msgid "Password aggiornata."
+msgstr "Password updated."
+
+msgid "Torna a TaskPlanner"
+msgstr "Back to TaskPlanner"
+
+msgid "Password attuale"
+msgstr "Current password"
+
+msgid "Nuova password"
+msgstr "New password"
+
+msgid "Ripeti la nuova password"
+msgstr "Repeat the new password"
+
+msgid "Sessione scaduta, riprova."
+msgstr "Session expired, please try again."
+
+msgid "Credenziali non valide, oppure account bloccato temporaneamente dopo troppi tentativi."
+msgstr "Invalid credentials, or account temporarily locked after too many attempts."
+
+msgid "La password attuale non è corretta."
+msgstr "The current password is incorrect."
+
+msgid "La nuova password deve avere almeno %(n)s caratteri."
+msgstr "The new password must be at least %(n)s characters long."
+
+msgid "Le due password non coincidono."
+msgstr "The two passwords do not match."
+
+msgid "Con l&#39;accesso tramite username e password, l&#39;applicazione conserva lo username, il nome visualizzato e la password, salvata solo come hash irreversibile e mai in chiaro."
+msgstr "When you sign in with a username and password, the app stores your username, display name and password, the latter only as an irreversible hash and never in plain text."

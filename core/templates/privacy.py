@@ -34,12 +34,17 @@ TEMPLATE_PRIVACY = '''
             <p>{{ _("TaskPlanner è un&#39;applicazione ad uso privato. Per esercitare i diritti previsti dal GDPR o per qualsiasi richiesta relativa ai dati personali, è possibile contattare il titolare all&#39;indirizzo:") }} {% if privacy_contact %}<a href="mailto:{{ privacy_contact }}">{{ privacy_contact }}</a>{% endif %}</p>
 
             <h3>2. {{ _("Dati raccolti") }}</h3>
+            {% if google_auth %}
             <p>{{ _("Al momento dell&#39;accesso tramite Google OAuth, l&#39;applicazione riceve e conserva i seguenti dati forniti da Google:") }}</p>
             <ul>
                 <li>{{ _("Nome e cognome") }}</li>
                 <li>{{ _("Indirizzo email") }}</li>
                 <li>{{ _("Foto del profilo") }}</li>
             </ul>
+            {% endif %}
+            {% if local_auth %}
+            <p>{{ _("Con l&#39;accesso tramite username e password, l&#39;applicazione conserva lo username, il nome visualizzato e la password, salvata solo come hash irreversibile e mai in chiaro.") }}</p>
+            {% endif %}
             <p>{{ _("Non vengono raccolti dati sanitari, dati di geolocalizzazione o altri dati appartenenti a categorie particolari ai sensi dell&#39;art. 9 GDPR.") }}</p>
 
             <h3>3. {{ _("Finalità del trattamento") }}</h3>
@@ -53,7 +58,9 @@ TEMPLATE_PRIVACY = '''
             <p>{{ _("Il trattamento è basato sul legittimo interesse del titolare a garantire un accesso sicuro e personalizzato all&#39;applicazione (art. 6.1.f GDPR).") }}</p>
 
             <h3>5. {{ _("Terze parti") }}</h3>
+            {% if google_auth %}
             <p>{{ _("L&#39;autenticazione è gestita tramite Google OAuth (Google LLC). Durante il processo di login, Google tratta i dati secondo la propria informativa:") }} <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
+            {% endif %}
             <p>{{ _("TaskPlanner non condivide dati personali con altre terze parti.") }}</p>
 
             <h3>6. {{ _("Conservazione dei dati") }}</h3>

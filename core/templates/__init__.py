@@ -4,7 +4,7 @@ Tutti i template HTML inline di TaskPlanner.
 Importa da qui nelle route:
     from core.templates import TEMPLATE_INDEX, TEMPLATE_NEW, ...
 """
-from core.templates.login     import _LOGIN_PAGE
+from core.templates.login     import _LOGIN_PAGE, _PASSWORD_PAGE
 from core.templates.outlook   import _OUTLOOK_JS
 from core.templates.export    import TEMPLATE_EXPORT, TEMPLATE_CHANGELOG
 from core.templates.cestino   import TEMPLATE_CESTINO
@@ -21,6 +21,7 @@ from core.templates.privacy import TEMPLATE_PRIVACY
 
 __all__ = [
     "_LOGIN_PAGE",
+    "_PASSWORD_PAGE",
     "_OUTLOOK_JS",
     "TEMPLATE_EXPORT",
     "TEMPLATE_CHANGELOG",
