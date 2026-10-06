@@ -54,3 +54,7 @@ dist/
 
 # Istruzioni locali per Claude Code (dettagli infrastruttura, non pubblici)
 CLAUDE.local.md
+
+# Icone desktop generate da desktop/make_icons.py (sorgente: pwa/icon-512.png)
+desktop/icons/*
+!desktop/icons/.gitkeep
