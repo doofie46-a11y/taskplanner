@@ -22,6 +22,9 @@ from server.users import (
 def _read_password(from_stdin: bool) -> str:
     if from_stdin:
         password = sys.stdin.readline().rstrip("\n")
+    elif not sys.stdin.isatty():
+        sys.exit("Nessun terminale interattivo: lancia il comando da un terminale "
+                 "oppure passa la password con --password-stdin.")
     else:
         password = getpass.getpass("Password: ")
         if password != getpass.getpass("Ripeti la password: "):
