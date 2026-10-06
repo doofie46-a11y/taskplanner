@@ -1,7 +1,7 @@
 flask>=3.0
 flask-login>=0.6
 flask-babel>=4.0
-werkzeug>=3.0
+werkzeug>=3.1.9
 requests>=2.31
 # Dipendenza indiretta di requests: minimo per vulnerabilità note (pip-audit 2026-10-01)
 urllib3>=2.8.0
