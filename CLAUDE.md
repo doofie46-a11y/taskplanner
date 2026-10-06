@@ -13,7 +13,7 @@ Supporta **due target di deployment**:
 
 **Versione corrente:** `1.6.0 "Raboso"`
 
-**Licenza:** GPL-3.0 (`LICENSE`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
+**Licenza:** AGPL-3.0 (`LICENSE`) dalla 1.6.0, prima GPL-3.0. Link "Codice sorgente" in sidebar da `SOURCE_URL` (`core/factory.py`, env `TASKPLANNER_SOURCE_URL`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 
 ---
 

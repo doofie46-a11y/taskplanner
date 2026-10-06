@@ -25,6 +25,11 @@ APP_CODENAME = 'Raboso'
 # Override via env TASKPLANNER_SUPPORT_URL.
 SUPPORT_URL = 'https://ko-fi.com/claudioruffina'
 
+# Link al codice sorgente mostrato in sidebar (AGPL-3.0, sezione 13: chi usa
+# l'app via rete deve poterne avere il sorgente). Se distribuisci o offri una
+# versione modificata, puntalo al TUO sorgente via env TASKPLANNER_SOURCE_URL.
+SOURCE_URL = 'https://github.com/doofie46-a11y/taskplanner'
+
 
 def create_app(mode: str, config_override: dict = None) -> Flask:
     """
@@ -56,6 +61,7 @@ def create_app(mode: str, config_override: dict = None) -> Flask:
     app.config['APP_VERSION']  = APP_VERSION
     app.config['APP_CODENAME'] = APP_CODENAME
     app.config['SUPPORT_URL']  = os.environ.get('TASKPLANNER_SUPPORT_URL', SUPPORT_URL)
+    app.config['SOURCE_URL']   = os.environ.get('TASKPLANNER_SOURCE_URL', SOURCE_URL)
 
     # ------------------------------------------------------------------ Babel
     app.config['BABEL_DEFAULT_LOCALE'] = 'it'
@@ -106,7 +112,8 @@ def create_app(mode: str, config_override: dict = None) -> Flask:
 
     @app.context_processor
     def _inject_globals():
-        return {'support_url': app.config['SUPPORT_URL'], 'is_desktop': mode == 'desktop'}
+        return {'support_url': app.config['SUPPORT_URL'], 'source_url': app.config['SOURCE_URL'],
+                'is_desktop': mode == 'desktop'}
 
     # ------------------------------------------------------------ Flask-Login
     login_manager = LoginManager()

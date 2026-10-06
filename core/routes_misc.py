@@ -18,6 +18,7 @@ CHANGELOG = [
             "🔒 Server: blocco temporaneo dell'account dopo 5 tentativi di accesso falliti",
             "🔁 Server: cambio password dall'icona accanto al nome utente",
             "🎨 Nuova icona per l'eseguibile desktop e la favicon, la stessa dell'app web",
+            "📜 Licenza cambiata da GPL-3.0 ad AGPL-3.0: chi offre TaskPlanner modificato come servizio web deve renderne disponibile il codice sorgente; link al sorgente nella barra laterale",
         ]
     },
     {

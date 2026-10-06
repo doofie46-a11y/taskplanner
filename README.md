@@ -178,5 +178,11 @@ If TaskPlanner is useful to you, you can [buy me a beer 🍺](https://ko-fi.com/
 
 ## License
 
-[GNU GPL v3.0](LICENSE). You may use, modify and redistribute TaskPlanner; modified versions
-you distribute must be released under the same license, with source code.
+[GNU AGPL v3.0](LICENSE). You may use, modify and redistribute TaskPlanner; modified versions
+must be released under the same license, with source code. This also applies when you let
+others use a modified version over a network (for example by hosting it as a web app): you must
+offer them its source code. Set `TASKPLANNER_SOURCE_URL` to point the in-app "Source code" link
+to your own repository.
+
+Versions up to 1.5.2 were released under the GNU GPL v3.0; from 1.6.0 onwards TaskPlanner is
+licensed under the AGPL v3.0.

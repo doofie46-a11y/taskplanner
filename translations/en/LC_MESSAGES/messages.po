@@ -991,3 +991,9 @@ msgstr "The two passwords do not match."
 
 msgid "Con l&#39;accesso tramite username e password, l&#39;applicazione conserva lo username, il nome visualizzato e la password, salvata solo come hash irreversibile e mai in chiaro."
 msgstr "When you sign in with a username and password, the app stores your username, display name and password, the latter only as an irreversible hash and never in plain text."
+
+msgid "Codice sorgente"
+msgstr "Source code"
+
+msgid "Codice sorgente di questa versione, licenza AGPL-3.0"
+msgstr "Source code of this version, AGPL-3.0 license"

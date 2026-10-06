@@ -49,7 +49,7 @@ def _version_info():
                 StringStruct("FileDescription", "TaskPlanner"),
                 StringStruct("FileVersion", ver),
                 StringStruct("InternalName", "TaskPlanner"),
-                StringStruct("LegalCopyright", "GNU GPL v3.0"),
+                StringStruct("LegalCopyright", "GNU AGPL v3.0"),
                 StringStruct("OriginalFilename", "TaskPlanner.exe"),
                 StringStruct("ProductName", "TaskPlanner"),
                 StringStruct("ProductVersion", ver),
