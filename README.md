@@ -148,15 +148,42 @@ Releases are built automatically by GitHub Actions for all three platforms when 
 
 ## Server mode
 
-The same codebase can also run as a multi-user web app (PostgreSQL) with
-`gunicorn app_server:app`. See `.env.example` for the required settings.
+The same codebase can also run as a multi-user web app (PostgreSQL). The easiest way is
+Docker Compose; you can also run it directly with `gunicorn app_server:app` (see
+`.env.example` for the required settings).
+
+### Docker Compose
+
+```bash
+git clone https://github.com/doofie46-a11y/taskplanner.git
+cd taskplanner
+cp .env.docker.example .env
+# set SECRET_KEY and POSTGRES_PASSWORD in .env (e.g. with: openssl rand -hex 32)
+docker compose up -d --build
+docker compose exec app python -m server.manage create-user admin
+```
+
+Then open http://127.0.0.1:8000 and sign in. The stack runs the app and PostgreSQL 17;
+the database and attachments live in the `db-data` and `app-data` volumes.
+
+- **Access from other devices**: by default the port is published on `127.0.0.1` only. Put the
+  app behind a reverse proxy with HTTPS (Caddy, nginx, Traefik…), or set
+  `TASKPLANNER_BIND=0.0.0.0` in `.env` for plain HTTP on your LAN. Don't expose it to the
+  internet without HTTPS: passwords and session cookies would travel in clear text.
+- **Update**: `git pull && docker compose up -d --build`. Database migrations run automatically
+  at startup.
+- **Backup**: `docker compose exec db pg_dump -U taskplanner taskplanner > taskplanner.sql`,
+  plus the `app-data` volume for attachments.
+
+### Sign-in
 
 Users sign in with Google, with a username and password, or both:
 
 - **Google**: set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
 - **Username and password**: enabled automatically when Google is not configured, or with
   `LOCAL_AUTH=true` next to Google. There is no public sign-up: accounts are created from the
-  command line, with the same environment variables as the server:
+  command line, with the same environment variables as the server (with Docker, prefix the
+  commands with `docker compose exec app`):
 
   ```bash
   python -m server.manage create-user mario --name "Mario Rossi"

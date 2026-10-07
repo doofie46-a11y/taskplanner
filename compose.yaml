@@ -1,0 +1,47 @@
+# TaskPlanner — modalità server con Docker Compose.
+#
+#   cp .env.docker.example .env      # poi compila SECRET_KEY e POSTGRES_PASSWORD
+#   docker compose up -d --build
+#   docker compose exec app python -m server.manage create-user <username>
+#
+# L'app ascolta su http://127.0.0.1:8000. Per accedere da altri dispositivi
+# mettila dietro un reverse proxy con HTTPS (Caddy, nginx, Traefik…).
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: taskplanner
+      POSTGRES_USER: taskplanner
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?imposta POSTGRES_PASSWORD nel file .env}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskplanner -d taskplanner"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    image: taskplanner:local
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    # Variabili opzionali (Google OAuth, PRIVACY_CONTACT_EMAIL, TZ_NAME, …) dal file .env
+    env_file: .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?imposta SECRET_KEY nel file .env}
+      DATABASE_URL: postgresql://taskplanner:${POSTGRES_PASSWORD}@db:5432/taskplanner
+      LOCAL_AUTH: ${LOCAL_AUTH:-true}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8000}
+    ports:
+      - "${TASKPLANNER_BIND:-127.0.0.1}:${TASKPLANNER_PORT:-8000}:8000"
+    volumes:
+      - app-data:/data
+
+volumes:
+  db-data:
+  app-data:

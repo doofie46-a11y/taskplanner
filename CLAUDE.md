@@ -84,6 +84,9 @@ taskplanner/
 │   └── launcher.py            # apre browser in --app mode, avvia Flask su thread
 │
 ├── app_server.py              # entrypoint server (gunicorn: app_server:app)
+├── Dockerfile                 # immagine server (python:3.14-slim, gunicorn --preload, utente non root, /data)
+├── compose.yaml               # app + postgres:17, volumi db-data/app-data, porta 127.0.0.1:8000
+├── .env.docker.example        # variabili per compose (SECRET_KEY, POSTGRES_PASSWORD, LOCAL_AUTH default true)
 ├── app_desktop.py             # entrypoint desktop (PyInstaller target)
 ├── app_web.py                 # LEGACY — monolite originale, rimane fino al cutover
 └── requirements/
@@ -91,6 +94,21 @@ taskplanner/
     ├── server.txt             # + psycopg2-binary, authlib, gunicorn
     └── desktop.txt            # + pywebview, pyinstaller, platformdirs
 ```
+
+---
+
+## Docker (self-hosting)
+
+Solo per chi installa TaskPlanner da sé: la produzione su ideadibusiness.com NON usa Docker
+(systemd + gunicorn, vedi `CLAUDE.local.md`).
+- `--preload` in gunicorn: `init_db` gira una volta sola nel master; senza, al primo avvio i
+  worker creerebbero lo schema in parallelo (race su `CREATE TABLE IF NOT EXISTS`).
+- `DATABASE_URL` è costruito in `compose.yaml` da `POSTGRES_PASSWORD`: la password deve essere
+  alfanumerica (finisce in un URL).
+- `env_file: .env` passa all'app le variabili opzionali; quelle in `environment:` hanno la precedenza.
+- Testato con podman + podman-compose (2026-10-07): su questo server UFW blocca il DNS interno
+  dei container podman (porta 53 sul bridge), quindi i test locali richiedono `--network=host`
+  in build ed `extra_hosts` per `db`. Non è un problema del compose.
 
 ---
 
