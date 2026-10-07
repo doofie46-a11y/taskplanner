@@ -1,0 +1,88 @@
+name: Docker Image
+
+# Pubblica l'immagine server su GitHub Container Registry:
+#   ghcr.io/doofie46-a11y/taskplanner:<versione>, :<major.minor>, :latest
+# - sui tag di versione (insieme alla release desktop)
+# - a mano (Run workflow) solo da master, per una versione non ancora pubblicata
+#   come immagine: la versione è APP_VERSION in core/factory.py
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write      # firma Sigstore dell'attestazione
+  attestations: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Versione
+        id: ver
+        run: |
+          set -e
+          VER=$(sed -n "s/^APP_VERSION *= *'\([^']*\)'.*/\1/p" core/factory.py)
+          [ -n "$VER" ] || { echo "APP_VERSION non trovata"; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            [ "v$VER" = "$GITHUB_REF_NAME" ] || { echo "Tag $GITHUB_REF_NAME diverso da APP_VERSION $VER"; exit 1; }
+          else
+            [ "$GITHUB_REF_NAME" = "master" ] || { echo "Avvio manuale consentito solo da master"; exit 1; }
+          fi
+          echo "version=$VER"      >> "$GITHUB_OUTPUT"
+          echo "minor=${VER%.*}"   >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Una versione già pubblicata non si sovrascrive (come i tag di release)
+      - name: Controllo versione già pubblicata
+        run: |
+          if docker buildx imagetools inspect "$IMAGE:${{ steps.ver.outputs.version }}" >/dev/null 2>&1; then
+            echo "Immagine $IMAGE:${{ steps.ver.outputs.version }} già pubblicata: serve una nuova versione"
+            exit 1
+          fi
+
+      - name: Build e push
+        id: push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.ver.outputs.version }}
+            ${{ env.IMAGE }}:${{ steps.ver.outputs.minor }}
+            ${{ env.IMAGE }}:latest
+          labels: |
+            org.opencontainers.image.title=TaskPlanner
+            org.opencontainers.image.description=Private daily task planner, self-hosted server mode
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ steps.ver.outputs.version }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.licenses=AGPL-3.0-only
+
+      # Attestazione di provenienza dell'immagine, salvata anche nel registry.
+      # Verifica: gh attestation verify oci://ghcr.io/doofie46-a11y/taskplanner:<versione> -R doofie46-a11y/taskplanner
+      - name: Attest build provenance
+        uses: actions/attest@v4
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

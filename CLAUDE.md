@@ -85,7 +85,7 @@ taskplanner/
 │
 ├── app_server.py              # entrypoint server (gunicorn: app_server:app)
 ├── Dockerfile                 # immagine server (python:3.14-slim, gunicorn --preload, utente non root, /data)
-├── compose.yaml               # app + postgres:17, volumi db-data/app-data, porta 127.0.0.1:8000
+├── compose.yaml               # app (ghcr.io/doofie46-a11y/taskplanner) + postgres:17, volumi db-data/app-data, porta 127.0.0.1:8000
 ├── .env.docker.example        # variabili per compose (SECRET_KEY, POSTGRES_PASSWORD, LOCAL_AUTH default true)
 ├── app_desktop.py             # entrypoint desktop (PyInstaller target)
 ├── app_web.py                 # LEGACY — monolite originale, rimane fino al cutover
@@ -105,6 +105,10 @@ Solo per chi installa TaskPlanner da sé: la produzione su ideadibusiness.com NO
   worker creerebbero lo schema in parallelo (race su `CREATE TABLE IF NOT EXISTS`).
 - `DATABASE_URL` è costruito in `compose.yaml` da `POSTGRES_PASSWORD`: la password deve essere
   alfanumerica (finisce in un URL).
+- Immagine pubblicata su GHCR da `.github/workflows/docker_image.yml` sui tag `v*.*.*` (amd64+arm64,
+  tag `<ver>`, `<major.minor>`, `latest`, attestazione nel registry). Avvio manuale solo da master,
+  per pubblicare la APP_VERSION corrente se non c'è già come immagine; una versione già pubblicata
+  non si sovrascrive (stessa regola dei tag di release).
 - `env_file: .env` passa all'app le variabili opzionali; quelle in `environment:` hanno la precedenza.
 - Testato con podman + podman-compose (2026-10-07): su questo server UFW blocca il DNS interno
   dei container podman (porta 53 sul bridge), quindi i test locali richiedono `--network=host`

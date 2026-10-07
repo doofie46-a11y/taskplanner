@@ -1,8 +1,10 @@
 # TaskPlanner — modalità server con Docker Compose.
 #
 #   cp .env.docker.example .env      # poi compila SECRET_KEY e POSTGRES_PASSWORD
-#   docker compose up -d --build
+#   docker compose up -d             # scarica l'immagine da ghcr.io
 #   docker compose exec app python -m server.manage create-user <username>
+#
+# Per compilare l'immagine dai sorgenti invece di scaricarla: docker compose up -d --build
 #
 # L'app ascolta su http://127.0.0.1:8000. Per accedere da altri dispositivi
 # mettila dietro un reverse proxy con HTTPS (Caddy, nginx, Traefik…).
@@ -24,8 +26,8 @@ services:
       retries: 10
 
   app:
+    image: ghcr.io/doofie46-a11y/taskplanner:${TASKPLANNER_VERSION:-latest}
     build: .
-    image: taskplanner:local
     restart: unless-stopped
     depends_on:
       db:

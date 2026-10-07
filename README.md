@@ -154,24 +154,37 @@ Docker Compose; you can also run it directly with `gunicorn app_server:app` (see
 
 ### Docker Compose
 
+You only need two files, `compose.yaml` and `.env`:
+
 ```bash
-git clone https://github.com/doofie46-a11y/taskplanner.git
-cd taskplanner
-cp .env.docker.example .env
+mkdir taskplanner && cd taskplanner
+curl -fsSLO https://raw.githubusercontent.com/doofie46-a11y/taskplanner/master/compose.yaml
+curl -fsSL -o .env https://raw.githubusercontent.com/doofie46-a11y/taskplanner/master/.env.docker.example
 # set SECRET_KEY and POSTGRES_PASSWORD in .env (e.g. with: openssl rand -hex 32)
-docker compose up -d --build
+docker compose up -d
 docker compose exec app python -m server.manage create-user admin
 ```
 
 Then open http://127.0.0.1:8000 and sign in. The stack runs the app and PostgreSQL 17;
 the database and attachments live in the `db-data` and `app-data` volumes.
 
+The image `ghcr.io/doofie46-a11y/taskplanner` is built by GitHub Actions for every release
+(`linux/amd64` and `linux/arm64`, e.g. Raspberry Pi), tagged with the version (`1.6.0`), the
+minor version (`1.6`) and `latest`. Pin a version with `TASKPLANNER_VERSION=1.6.0` in `.env`.
+To check that an image was built from this repository:
+
+```bash
+gh attestation verify oci://ghcr.io/doofie46-a11y/taskplanner:latest -R doofie46-a11y/taskplanner
+```
+
+To build the image yourself instead, clone the repository and run `docker compose up -d --build`.
+
 - **Access from other devices**: by default the port is published on `127.0.0.1` only. Put the
   app behind a reverse proxy with HTTPS (Caddy, nginx, Traefik…), or set
   `TASKPLANNER_BIND=0.0.0.0` in `.env` for plain HTTP on your LAN. Don't expose it to the
   internet without HTTPS: passwords and session cookies would travel in clear text.
-- **Update**: `git pull && docker compose up -d --build`. Database migrations run automatically
-  at startup.
+- **Update**: `docker compose pull && docker compose up -d` (from source:
+  `git pull && docker compose up -d --build`). Database migrations run automatically at startup.
 - **Backup**: `docker compose exec db pg_dump -U taskplanner taskplanner > taskplanner.sql`,
   plus the `app-data` volume for attachments.
 
