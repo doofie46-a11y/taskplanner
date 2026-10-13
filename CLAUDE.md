@@ -11,7 +11,7 @@ Supporta **due target di deployment**:
 | **Server** | Google OAuth e/o username+password | PostgreSQL | `app_server.py` | systemd + gunicorn |
 | **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
-**Versione corrente:** `1.6.0 "Raboso"`
+**Versione corrente:** `1.6.1 "Pinot Grigio"`
 
 **Licenza:** AGPL-3.0 (`LICENSE`) dalla 1.6.0, prima GPL-3.0. Link "Codice sorgente" in sidebar da `SOURCE_URL` (`core/factory.py`, env `TASKPLANNER_SOURCE_URL`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 

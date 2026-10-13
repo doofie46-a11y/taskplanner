@@ -239,7 +239,7 @@ def register(app):
                 SELECT COALESCE(cat.name, 'Nessuna'), cat.color, COUNT(*)
                 FROM task_completed tc JOIN tasks t ON t.id = tc.task_id
                 LEFT JOIN categories cat ON cat.id = t.category_id
-                WHERE {cond_c} GROUP BY t.category_id
+                WHERE {cond_c} GROUP BY t.category_id, cat.name, cat.color
             """, params_c)
             by_cat = c.fetchall()
 
@@ -256,7 +256,7 @@ def register(app):
             c.execute(f"""
                 SELECT COALESCE(cat.name,'Nessuna'), cat.color, COUNT(*) FROM tasks t
                 LEFT JOIN categories cat ON cat.id = t.category_id
-                WHERE {' AND '.join(creati_cat_conds)} GROUP BY t.category_id
+                WHERE {' AND '.join(creati_cat_conds)} GROUP BY t.category_id, cat.name, cat.color
             """, creati_cat_params)
             creati_by_cat = c.fetchall()
 
@@ -290,7 +290,7 @@ def register(app):
                 SELECT COALESCE(cat.name,'Nessuna'), cat.color, COUNT(*)
                 FROM rollover_history rh JOIN tasks t ON t.id = rh.task_id
                 LEFT JOIN categories cat ON cat.id = t.category_id
-                WHERE {' AND '.join(roll_cat_conds)} GROUP BY t.category_id
+                WHERE {' AND '.join(roll_cat_conds)} GROUP BY t.category_id, cat.name, cat.color
             """, roll_cat_params)
             rollover_by_cat = c.fetchall()
 
@@ -317,7 +317,7 @@ def register(app):
                 FROM task_completed tc JOIN tasks t ON t.id = tc.task_id
                 LEFT JOIN categories cat ON cat.id = t.category_id
                 WHERE {tempo_cat_cond} AND tc.tempo_impiegato IS NOT NULL
-                GROUP BY t.category_id
+                GROUP BY t.category_id, cat.name, cat.color
             """, tempo_cat_params)
             tempo_by_cat = [(r[0], r[1], r[2] or 0) for r in c.fetchall() if r[2]]
 

@@ -10,6 +10,14 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.6.1",
+        "codename": "Pinot Grigio",
+        "date": "2026-10-13",
+        "notes": [
+            "📊 Server: la pagina Statistiche si carica di nuovo (con PostgreSQL andava in errore)",
+        ]
+    },
+    {
         "version": "1.6.0",
         "codename": "Raboso",
         "date": "2026-10-06",
