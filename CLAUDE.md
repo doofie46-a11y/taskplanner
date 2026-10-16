@@ -11,7 +11,7 @@ Supporta **due target di deployment**:
 | **Server** | Google OAuth e/o username+password | PostgreSQL | `app_server.py` | systemd + gunicorn |
 | **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
-**Versione corrente:** `1.6.1 "Pinot Grigio"`
+**Versione corrente:** `1.7.0 "Lambrusco"`
 
 **Licenza:** AGPL-3.0 (`LICENSE`) dalla 1.6.0, prima GPL-3.0. Link "Codice sorgente" in sidebar da `SOURCE_URL` (`core/factory.py`, env `TASKPLANNER_SOURCE_URL`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 
@@ -51,7 +51,8 @@ taskplanner/
 │   ├── routes_tasks.py        # /, /add, /new, /edit, /done, /posticipa, /pin, /delete
 │   ├── routes_attachments.py  # /upload, /download, /delete_attachment
 │   ├── routes_cestino.py      # /cestino e sub-routes
-│   ├── routes_api.py          # /tasks_stato, /tasks_in_scadenza, /add_from_mail
+│   ├── routes_api.py          # /tasks_stato, /tasks_in_scadenza, /api/tasks (alias /add_from_mail)
+│   ├── api_keys.py            # chiavi API: generazione, hash SHA-256, lookup, migrazione legacy
 │   ├── routes_setup.py        # /setup/categories CRUD
 │   ├── routes_stats.py        # /stats
 │   ├── routes_export.py       # /export
@@ -66,12 +67,14 @@ taskplanner/
 │   ├── export.py              # TEMPLATE_EXPORT, TEMPLATE_CHANGELOG
 │   ├── cestino.py             # TEMPLATE_CESTINO
 │   ├── contaschei.py          # TEMPLATE_CONTASCHEI, TEMPLATE_CONTASCHEI_CATEGORIES, TEMPLATE_CONTASCHEI_BILANCIO
-│   └── login.py               # _LOGIN_PAGE (Google e/o form), _PASSWORD_PAGE (cambio password)
+│   ├── login.py               # _LOGIN_PAGE (Google e/o form), _PASSWORD_PAGE (cambio password)
+│   └── api.py                 # TEMPLATE_API (pagina API e integrazioni, solo server)
 │
 ├── server/                    # server-only: postgres + google oauth
 │   ├── db.py                  # psycopg2 factory, init_db() PostgreSQL
 │   ├── auth.py                # login (Google OAuth e/o locale), cambio password, user loader
 │   ├── users.py               # account locali: hash password, lockout, categorie default
+│   ├── api_keys.py            # /account/api: crea/rigenera/revoca chiavi API (CSRF)
 │   ├── manage.py              # CLI: python -m server.manage create-user|set-password|list-users
 │   └── config.py              # DATABASE_URL, GOOGLE_CLIENT_ID/SECRET, LOCAL_AUTH, APP_BASE_URL
 │
@@ -228,13 +231,17 @@ git push origin v1.X.Y
 `id`, `task_id`, `stored_name`, `original_name`, `uploaded_at`
 
 ### `users` (server only)
-`id`, `google_id` (NULL per account locali), `email`, `name`, `picture`, `api_key`, `created_at`, `username` (UNIQUE, minuscolo), `password_hash` (werkzeug scrypt), `failed_logins`, `locked_until`
+`id`, `google_id` (NULL per account locali), `email`, `name`, `picture`, `api_key` (dalla 1.7.0 sempre NULL, migrata in `api_keys`), `created_at`, `username` (UNIQUE, minuscolo), `password_hash` (werkzeug scrypt), `failed_logins`, `locked_until`
+
+### `api_keys` (dalla 1.7.0)
+`id`, `user_id` FK (`ON DELETE CASCADE`), `name`, `key_hash` (SHA-256 hex, UNIQUE), `key_hint` (ultimi 4 caratteri), `created_at`, `last_used_at`.
+Chiavi `tp_` + 32 byte casuali, mostrate in chiaro una volta sola (risposta del POST di creazione/rigenerazione, `Cache-Control: no-store`). Max 10 per utente. All'avvio `migrate_legacy_keys()` sposta `users.api_key` in chiaro in `api_keys` (nome "Chiave precedente") e lo azzera. In desktop la tabella esiste ma resta vuota (niente pagina, l'API non è usabile).
 
 ### Login locale (dalla 1.6.0)
 - Google attivo se `GOOGLE_CLIENT_ID`+`SECRET` sono impostati; login locale attivo con `LOCAL_AUTH=true`, oppure di default se Google non è configurato. Nessuno dei due → `RuntimeError` all'avvio
 - Niente registrazione pubblica: account creati da CLI (`server/manage.py`)
 - Lockout nel DB (vale con più worker gunicorn): 5 tentativi falliti → bloccato 15 minuti; `set-password` sblocca. Messaggio d'errore unico per credenziali errate/account bloccato/username inesistente (niente enumerazione), hash fittizio verificato anche per username inesistenti
-- CSRF token in sessione sui form di login e cambio password (il resto dell'app non ha CSRF)
+- CSRF token in sessione sui form di login, cambio password e pagina chiavi API (il resto dell'app non ha CSRF)
 
 ### `movement_categories` (Contaschei)
 `id`, `user_id`, `name`, `type` (`income`/`expense`), `color` (HEX)
@@ -282,7 +289,7 @@ Nessun soft-delete: `DELETE` diretto (stesso pattern di `delete_category()`).
 | `/delete_attachment/<aid>` | POST | attachments | Elimina allegato |
 | `/tasks_stato` | GET | api | JSON stato task |
 | `/tasks_in_scadenza` | GET | api | JSON task in scadenza |
-| `/add_from_mail` | POST | api | Crea task da macro VBA (api_key) |
+| `/api/tasks` | POST | api | Crea task da client esterni (chiave API); alias storico `/add_from_mail` |
 | `/stats` | GET | stats | Statistiche |
 | `/export` | GET/POST | export | Export CSV/JSON/TXT/MD |
 | `/setup/categories` | GET/POST | setup | Gestione categorie |
@@ -300,6 +307,8 @@ Nessun soft-delete: `DELETE` diretto (stesso pattern di `delete_category()`).
 | `/contaschei/bilancio` | GET | contaschei | Bilancio per periodo (mese/bimestre/trimestre/quadrimestre/semestre/anno), filtri tipo/tipologia |
 | `/login` | GET/POST | auth | Pagina login; POST = login locale (server) |
 | `/account/password` | GET/POST | auth | (server, solo account locali) Cambio password |
+| `/account/api` | GET | auth | (server) Pagina API e integrazioni: chiavi e istruzioni |
+| `/account/api/create`, `/account/api/<kid>/regenerate`, `/account/api/<kid>/delete` | POST | auth | (server) Gestione chiavi API (CSRF) |
 | `/logout` | POST | auth | Logout |
 | `/auth/google/login` | GET | auth | (server only) Avvia OAuth |
 | `/auth/google/callback` | GET | auth | (server only) Callback OAuth |
@@ -321,9 +330,14 @@ Supportato su card (vista giornaliera), form modifica e form nuovo task. Usa sem
 - Gruppi di categorie: click sull'header seleziona/deseleziona tutte; click sulla freccia espande/collassa
 - Sezione "⚠️ Senza categoria" visibile solo se esistono task senza categoria
 
-### Inoltro email da Outlook (macro VBA)
-`POST /add_from_mail` con JSON `{titolo, note, data_prevista, api_key}` (o header `X-API-Key` al posto del campo nel body). Disponibile su server (HTTPS) e desktop (localhost).
-La macro VBA non è più nel repo (rimossa il 2026-09-30: puntava a una porta fissa, incompatibile con la porta casuale del desktop); l'endpoint resta disponibile per client esterni.
+### API /api/tasks (dalla 1.7.0, prima solo /add_from_mail)
+`POST /api/tasks` (o `/add_from_mail`) con JSON `{titolo, note, data_prevista, ora, priorita, categoria, url}`; chiave in header `X-API-Key`, `Authorization: Bearer` o (client vecchi) campo `api_key` nel JSON.
+- Solo `titolo` obbligatorio (max 500 caratteri); senza campi opzionali il comportamento è quello di sempre (oggi, Media, senza categoria)
+- `data_prevista`: `YYYY-MM-DD`, `oggi`/`today`, `domani`/`tomorrow`, `+N`; vuota = oggi. `priorita` anche in inglese. `categoria` per nome tra quelle dell'utente (case-insensitive). `url` solo http/https (diventa un link nella card)
+- Dati non validi o campi sconosciuti → 400 `{"ok": false, "error": "<inglese>", "field": "<campo>"}`, task non creato
+- Nel log il corpo è registrato con la chiave sostituita da asterischi (`_mask_key`)
+- Pagina `/account/api` (solo server) con istruzioni ed esempi: HTTP Shortcuts, Comandi rapidi, macro VBA Outlook, curl/PowerShell
+- Rate limit: solo nel reverse proxy (in produzione nginx, vedi `CLAUDE.local.md`), non nell'app
 
 
 ### Contaschei — ottimizzazione mobile

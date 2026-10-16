@@ -57,3 +57,7 @@ def init_app(app, login_manager):
     # --- Auth routes + user_loader ---
     from server.auth import register as register_auth
     register_auth(app, login_manager, oauth)
+
+    # --- Pagina API e integrazioni (chiavi API) ---
+    from server.api_keys import register as register_api_keys
+    register_api_keys(app)

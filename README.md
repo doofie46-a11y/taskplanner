@@ -20,6 +20,7 @@ nessun account, nessun cloud. Interfaccia in italiano e inglese.*
 - **Contaschei**: a small personal income/expense tracker with recurring entries and period reports
 - **Dark mode**, Italian and English UI
 - **Outlook integration** on Windows (create events and tasks)
+- **API** (server mode) to create tasks from Outlook, phone shortcuts, scripts and automation tools
 
 ## Screenshots
 
@@ -206,6 +207,25 @@ Users sign in with Google, with a username and password, or both:
 
   Passwords are stored as salted hashes. After 5 wrong attempts an account is locked for
   15 minutes. Users can change their password from the key icon next to their name.
+
+### API
+
+Each user can create API keys from **API and integrations** in the sidebar and use them to
+create tasks from other apps (Outlook macros, HTTP Shortcuts on Android, Apple Shortcuts,
+curl, Home Assistant, n8n, …). The page has the full field list and ready-made examples.
+
+```bash
+curl -X POST https://your-server/api/tasks \
+  -H "X-API-Key: YOUR_API_KEY" -H "Content-Type: application/json" \
+  -d '{"titolo": "Call the dentist", "data_prevista": "tomorrow", "priorita": "Alta"}'
+```
+
+- A key can only create tasks, not read or change them. Keys are stored as SHA-256 hashes and
+  shown once, when created; each one can be regenerated or revoked on its own.
+- Invalid values (an unknown category, a wrong date, …) are rejected with a `400` and a JSON
+  body naming the `field` to fix. The old `/add_from_mail` path still works.
+- The app does not rate-limit the endpoint: if it is reachable from the internet, add a limit
+  in your reverse proxy (e.g. nginx `limit_req` on `/api/tasks` and `/add_from_mail`).
 
 ## Contributing
 

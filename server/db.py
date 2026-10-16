@@ -3,6 +3,8 @@ import logging
 
 import psycopg2
 
+from core.api_keys import migrate_legacy_keys
+
 from server.config import DATABASE_URL
 
 logger = logging.getLogger(__name__)
@@ -156,6 +158,24 @@ def init_db(app):
         c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT")
         c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_logins INTEGER NOT NULL DEFAULT 0")
         c.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until  TIMESTAMP")
+
+        # Chiavi API multiple per utente, salvate come hash (1.7.0). La vecchia
+        # chiave unica in chiaro (users.api_key) viene migrata e poi cancellata;
+        # i nuovi utenti non ne hanno una finché non la creano dalla pagina API.
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS api_keys (
+                id           BIGSERIAL PRIMARY KEY,
+                user_id      BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                name         TEXT NOT NULL,
+                key_hash     TEXT UNIQUE NOT NULL,
+                key_hint     TEXT NOT NULL,
+                created_at   TIMESTAMP DEFAULT NOW(),
+                last_used_at TIMESTAMP
+            )
+        """)
+        c.execute("ALTER TABLE users ALTER COLUMN api_key DROP NOT NULL")
+        c.execute("ALTER TABLE users ALTER COLUMN api_key DROP DEFAULT")
+        migrate_legacy_keys(c, "Chiave precedente")
 
         conn.commit()
         app.logger.info("Database PostgreSQL inizializzato / verificato")

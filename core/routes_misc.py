@@ -10,6 +10,18 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.7.0",
+        "codename": "Lambrusco",
+        "date": "2026-10-16",
+        "notes": [
+            "🔌 Server: nuova pagina «API e integrazioni» nella barra laterale, con istruzioni ed esempi per Outlook, HTTP Shortcuts, Comandi rapidi, curl e altri strumenti",
+            "🔑 Server: più chiavi API per utente, con un nome e la data di ultimo utilizzo, rigenerabili o revocabili una per una; salvate solo come hash e mostrate una volta sola",
+            "➕ API: nuovi campi facoltativi ora, priorità, categoria, url e date come «domani» o «+3»; nuovo indirizzo /api/tasks (anche /add_from_mail continua a funzionare)",
+            "⚠️ API: dati sbagliati (categoria inesistente, data o orario non validi, titolo oltre 500 caratteri) restituiscono un errore chiaro con il campo da correggere, senza creare il task",
+            "🔒 La chiave API non viene più scritta nel log quando è inviata nel JSON",
+        ]
+    },
+    {
         "version": "1.6.1",
         "codename": "Pinot Grigio",
         "date": "2026-10-13",

@@ -997,3 +997,265 @@ msgstr "Source code"
 
 msgid "Codice sorgente di questa versione, licenza AGPL-3.0"
 msgstr "Source code of this version, AGPL-3.0 license"
+
+msgid "API e integrazioni"
+msgstr "API and integrations"
+
+msgid "Con una chiave API puoi creare task da altre app: Outlook, le scorciatoie dello smartphone, script e servizi di automazione."
+msgstr "With an API key you can create tasks from other apps: Outlook, smartphone shortcuts, scripts and automation services."
+
+msgid "La chiave permette solo di creare task: non può leggere, modificare o cancellare quelli che hai già."
+msgstr "The key can only create tasks: it cannot read, change or delete the ones you already have."
+
+#, python-format
+msgid "Ecco la chiave «%(name)s»."
+msgstr "Here is the key “%(name)s”."
+
+msgid "Copiala adesso e incollala nell'app che la userà: per sicurezza non verrà più mostrata. Se la perdi, rigenerala."
+msgstr "Copy it now and paste it into the app that will use it: for security it will not be shown again. If you lose it, regenerate it."
+
+msgid "Le tue chiavi"
+msgstr "Your keys"
+
+msgid "Chiave"
+msgstr "Key"
+
+msgid "Creata"
+msgstr "Created"
+
+msgid "Ultimo utilizzo"
+msgstr "Last used"
+
+msgid "Mai"
+msgstr "Never"
+
+msgid "Rigenerare la chiave? Quella attuale smetterà subito di funzionare e dovrai aggiornarla nell'app che la usa."
+msgstr "Regenerate the key? The current one will stop working immediately and you will have to update it in the app that uses it."
+
+msgid "Rigenera"
+msgstr "Regenerate"
+
+msgid "Revocare la chiave? Le app che la usano non potranno più creare task."
+msgstr "Revoke the key? Apps using it will no longer be able to create tasks."
+
+msgid "Revoca"
+msgstr "Revoke"
+
+msgid "Non hai ancora nessuna chiave."
+msgstr "You don't have any keys yet."
+
+msgid "Nome della chiave, es. Telefono o Outlook ufficio"
+msgstr "Key name, e.g. Phone or Work Outlook"
+
+msgid "Crea chiave"
+msgstr "Create key"
+
+#, python-format
+msgid "Hai raggiunto il massimo di %(n)s chiavi."
+msgstr "You have reached the maximum of %(n)s keys."
+
+msgid "Usa una chiave diversa per ogni dispositivo o app: se ne perdi uno, revochi solo quella e le altre continuano a funzionare."
+msgstr "Use a different key for each device or app: if you lose one, you revoke only that key and the others keep working."
+
+msgid "Sicurezza"
+msgstr "Security"
+
+msgid "Tratta la chiave come una password: chi la conosce può creare task a tuo nome."
+msgstr "Treat the key like a password: anyone who knows it can create tasks on your behalf."
+
+msgid "Mandala sempre nell'intestazione X-API-Key, mai nell'indirizzo: gli indirizzi finiscono nei log e nella cronologia."
+msgstr "Always send it in the X-API-Key header, never in the URL: URLs end up in logs and browser history."
+
+msgid "Non condividerla in screenshot, chat o macro che dai ad altri."
+msgstr "Don't share it in screenshots, chats or macros you give to others."
+
+msgid "Se perdi un dispositivo o pensi che la chiave sia stata vista, revocala o rigenerala qui."
+msgstr "If you lose a device or think the key has been seen, revoke or regenerate it here."
+
+msgid "Controlla ogni tanto la colonna «Ultimo utilizzo»: se una chiave risulta usata quando non l'hai fatto tu, revocala."
+msgstr "Check the “Last used” column now and then: if a key shows use you didn't make, revoke it."
+
+msgid "Come funziona"
+msgstr "How it works"
+
+msgid "Questo indirizzo non usa HTTPS: la chiave viaggerebbe in chiaro. Usa l'API solo dietro HTTPS."
+msgstr "This address does not use HTTPS: the key would travel in plain text. Only use the API over HTTPS."
+
+msgid "Invia una richiesta POST con un corpo JSON a questo indirizzo:"
+msgstr "Send a POST request with a JSON body to this address:"
+
+msgid "Intestazioni della richiesta:"
+msgstr "Request headers:"
+
+msgid "LA_TUA_CHIAVE"
+msgstr "YOUR_API_KEY"
+
+msgid "In alternativa a X-API-Key è accettata anche l'intestazione Authorization: Bearer LA_TUA_CHIAVE. Il vecchio indirizzo /add_from_mail continua a funzionare."
+msgstr "Instead of X-API-Key, the header Authorization: Bearer YOUR_API_KEY is also accepted. The old /add_from_mail address keeps working."
+
+msgid "Campi del JSON (solo il titolo è obbligatorio):"
+msgstr "JSON fields (only the title is required):"
+
+msgid "Campo"
+msgstr "Field"
+
+msgid "Valore"
+msgstr "Value"
+
+msgid "Se manca"
+msgstr "If missing"
+
+msgid "Testo, al massimo 500 caratteri"
+msgstr "Text, up to 500 characters"
+
+msgid "obbligatorio"
+msgstr "required"
+
+msgid "Testo, senza limiti di lunghezza"
+msgstr "Text, no length limit"
+
+msgid "nessuna nota"
+msgstr "no notes"
+
+msgid "tra 3 giorni"
+msgstr "in 3 days"
+
+msgid "oggi"
+msgstr "today"
+
+msgid "Orario HH:MM, es. 09:30"
+msgstr "Time HH:MM, e.g. 09:30"
+
+msgid "nessun orario"
+msgstr "no time"
+
+msgid "anche in inglese: Low, Medium, High, Urgent"
+msgstr "also in English: Low, Medium, High, Urgent"
+
+msgid "Nome di una tua categoria, maiuscole e minuscole indifferenti"
+msgstr "Name of one of your categories, case-insensitive"
+
+msgid "senza categoria"
+msgstr "no category"
+
+msgid "Link che inizia con http:// o https://"
+msgstr "Link starting with http:// or https://"
+
+msgid "nessun link"
+msgstr "no link"
+
+msgid "Risposta se il task è stato creato:"
+msgstr "Response when the task is created:"
+
+msgid "Se un dato è sbagliato il task non viene creato e la risposta (in inglese) dice quale campo correggere:"
+msgstr "If a value is wrong the task is not created and the response says which field to fix:"
+
+msgid "Esempi e idee"
+msgstr "Examples and ideas"
+
+msgid "Configurazione base, da fare una volta:"
+msgstr "Basic setup, done once:"
+
+msgid "Menu ⋮ → Variabili → + → Costante: nome api_key, valore la tua chiave. Quando la rigeneri, la cambi solo qui."
+msgstr "Menu ⋮ → Variables → + → Constant: name api_key, value your key. When you regenerate it, you only change it here."
+
+msgid "Nuova scorciatoia → Richiesta HTTP normale: metodo POST, indirizzo quello indicato sopra."
+msgstr "New shortcut → Regular HTTP Shortcut: method POST, the address shown above."
+
+msgid "Intestazioni della richiesta → aggiungi X-API-Key con valore {api_key} (scegli la variabile con l'icona {})."
+msgstr "Request Headers → add X-API-Key with value {api_key} (pick the variable with the {} icon)."
+
+msgid "Corpo della richiesta → JSON (application/json), per esempio:"
+msgstr "Request Body → JSON (application/json), for example:"
+
+msgid "Per far chiedere il titolo a ogni avvio, crea una variabile titolo di tipo Testo."
+msgstr "To be asked for the title every time, create a variable titolo of type Text."
+
+msgid "Gestione risposta → mostra la risposta in una finestra: vedi subito se il task è stato creato o cosa correggere."
+msgstr "Response Handling → show the response in a dialog: you see right away whether the task was created or what to fix."
+
+msgid "Idee:"
+msgstr "Ideas:"
+
+msgid "Condividi con TaskPlanner"
+msgstr "Share to TaskPlanner"
+
+msgid "nelle impostazioni della scorciatoia attiva la ricezione di testo condiviso. Da Chrome, YouTube, Gmail o WhatsApp scegli Condividi → la scorciatoia: il link o il testo diventano un task (mettilo in url o in titolo)."
+msgstr "in the shortcut settings, enable receiving shared text. From Chrome, YouTube, Gmail or WhatsApp choose Share → the shortcut: the link or text becomes a task (put it in url or titolo)."
+
+msgid "Dettatura"
+msgstr "Dictation"
+
+msgid "con la variabile di tipo Testo usa il microfono della tastiera: parli e il task viene creato."
+msgstr "with the Text variable, use the keyboard microphone: you speak and the task is created."
+
+msgid "Widget sulla home"
+msgstr "Home screen widget"
+
+msgid "aggiungi la scorciatoia come widget, ad esempio «Task per domani» con data_prevista impostata a domani."
+msgstr "add the shortcut as a widget, for example “Task for tomorrow” with data_prevista set to tomorrow."
+
+msgid "Promemoria veloci"
+msgstr "Quick reminders"
+
+msgid "una scorciatoia per ogni categoria, con categoria e priorità già impostate."
+msgstr "one shortcut per category, with category and priority already set."
+
+msgid "Comandi rapidi (iPhone, iPad, Mac)"
+msgstr "Shortcuts (iPhone, iPad, Mac)"
+
+msgid "Nuovo comando → azione «Chiedi input» (testo) per il titolo."
+msgstr "New shortcut → “Ask for Input” action (text) for the title."
+
+msgid "Azione «Ottieni contenuti dell'URL»: indirizzo quello indicato sopra, metodo POST."
+msgstr "“Get Contents of URL” action: the address shown above, method POST."
+
+msgid "Intestazioni: X-API-Key con la tua chiave. Corpo della richiesta: JSON, campo titolo = Input fornito."
+msgstr "Headers: X-API-Key with your key. Request Body: JSON, field titolo = Provided Input."
+
+msgid "Aggiungi «Mostra risultato» per vedere la risposta."
+msgstr "Add “Show Result” to see the response."
+
+msgid "Attivando «Mostra nel foglio di condivisione» puoi creare task da Safari o da altre app, come su Android."
+msgstr "With “Show in Share Sheet” enabled you can create tasks from Safari or other apps, as on Android."
+
+msgid "Outlook (macro VBA)"
+msgstr "Outlook (VBA macro)"
+
+msgid "Crea un task dall'email selezionata: oggetto come titolo, testo come note. In Outlook: Alt+F11, inserisci un modulo, incolla il codice e metti la tua chiave in TP_KEY. Poi aggiungi la macro alla barra multifunzione."
+msgstr "Creates a task from the selected email: subject as title, body as notes. In Outlook: Alt+F11, insert a module, paste the code and put your key in TP_KEY. Then add the macro to the ribbon."
+
+msgid "curl e PowerShell"
+msgstr "curl and PowerShell"
+
+msgid "Chiamare il dentista"
+msgstr "Call the dentist"
+
+msgid "Utile anche negli script programmati: per esempio un task «Backup fallito» quando un backup non va a buon fine."
+msgstr "Also handy in scheduled scripts: for example a “Backup failed” task when a backup goes wrong."
+
+msgid "Altre idee"
+msgstr "More ideas"
+
+msgid "azione HTTP Request, per esempio un task quando arrivi in ufficio o quando la batteria è carica."
+msgstr "HTTP Request action, for example a task when you arrive at the office or when the battery is full."
+
+msgid "un rest_command richiamato da un'automazione, per esempio «Lavatrice finita, stendere»."
+msgstr "a rest_command called by an automation, for example “Washing machine done, hang the laundry”."
+
+msgid "un'azione webhook per creare task da moduli, calendari, feed RSS o email filtrate."
+msgstr "a webhook action to create tasks from forms, calendars, RSS feeds or filtered emails."
+
+msgid "✔ Copiato"
+msgstr "✔ Copied"
+
+msgid "Dai un nome alla chiave, per esempio il dispositivo che la userà."
+msgstr "Give the key a name, for example the device that will use it."
+
+#, python-format
+msgid "Il nome può avere al massimo %(n)s caratteri."
+msgstr "The name can be at most %(n)s characters long."
+
+#, python-format
+msgid "Hai già %(n)s chiavi: revocane una prima di crearne un'altra."
+msgstr "You already have %(n)s keys: revoke one before creating another."

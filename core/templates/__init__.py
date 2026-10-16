@@ -18,6 +18,7 @@ from core.templates.contaschei import (
     TEMPLATE_CONTASCHEI_CATEGORIES,
 )
 from core.templates.privacy import TEMPLATE_PRIVACY
+from core.templates.api     import TEMPLATE_API
 
 __all__ = [
     "_LOGIN_PAGE",
@@ -35,4 +36,5 @@ __all__ = [
     "TEMPLATE_CONTASCHEI_BILANCIO",
     "TEMPLATE_CONTASCHEI_CATEGORIES",
     "TEMPLATE_PRIVACY",
+    "TEMPLATE_API",
 ]

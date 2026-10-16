@@ -152,6 +152,20 @@ def init_db(app, db_path: Path):
         _add_col(c, "tasks",      "user_id",    "INTEGER")
         _add_col(c, "tasks",      "deleted_at", "DATETIME DEFAULT NULL")
 
+        # Chiavi API (1.7.0): tabella condivisa con il server perché /api/tasks sta
+        # in core; in desktop non c'è la pagina per crearle, quindi resta vuota.
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS api_keys (
+                id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                name         TEXT NOT NULL,
+                key_hash     TEXT UNIQUE NOT NULL,
+                key_hint     TEXT NOT NULL,
+                created_at   DATETIME DEFAULT (datetime('now')),
+                last_used_at DATETIME
+            )
+        """)
+
         # Utente locale fisso (id=1) — creato se assente
         c.execute("SELECT id FROM users WHERE id = 1")
         if not c.fetchone():
