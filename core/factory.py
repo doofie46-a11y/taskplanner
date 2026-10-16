@@ -110,6 +110,10 @@ def create_app(mode: str, config_override: dict = None) -> Flask:
         except (ValueError, TypeError):
             return value
 
+    from core.utils import is_safe_url
+    # {% if url is safe_url %}: href solo per http/https (anche per valori salvati prima della 1.7.0)
+    app.jinja_env.tests['safe_url'] = is_safe_url
+
     @app.context_processor
     def _inject_globals():
         return {'support_url': app.config['SUPPORT_URL'], 'source_url': app.config['SOURCE_URL'],

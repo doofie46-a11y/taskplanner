@@ -1259,3 +1259,9 @@ msgstr "The name can be at most %(n)s characters long."
 #, python-format
 msgid "Hai già %(n)s chiavi: revocane una prima di crearne un'altra."
 msgstr "You already have %(n)s keys: revoke one before creating another."
+
+msgid "URL non valido: sono ammessi solo link http:// o https://"
+msgstr "Invalid URL: only http:// or https:// links are allowed"
+
+msgid "Solo link http:// o https://"
+msgstr "Only http:// or https:// links"

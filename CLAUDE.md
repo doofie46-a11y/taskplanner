@@ -339,6 +339,9 @@ Supportato su card (vista giornaliera), form modifica e form nuovo task. Usa sem
 - Pagina `/account/api` (solo server) con istruzioni ed esempi: HTTP Shortcuts, Comandi rapidi, macro VBA Outlook, curl/PowerShell
 - Rate limit: solo nel reverse proxy (in produzione nginx, vedi `CLAUDE.local.md`), non nell'app
 
+### URL dei task (dalla 1.7.0)
+Solo `http`/`https`: `normalize_task_url()` (`core/utils.py`) nei form `/add` e `/edit` aggiunge `https://` se manca lo schema e rifiuta il resto (400); la card rende l'`href` solo se `{% if url is safe_url %}` (test Jinja registrato in `core/factory.py`), altrimenti testo semplice. L'API usa lo stesso `is_safe_url()`.
+
 
 ### Contaschei — ottimizzazione mobile
 Le pagine `core/templates/contaschei.py` hanno meta `viewport` dedicato e breakpoint `@media (max-width: 640px)`: header e form si impilano in colonna, le righe movimento (`.mv-row`) si riordinano in mini-card (data+importo in alto, tipologia e azioni su righe proprie con tap target più larghi), la tabella tipologie scrolla in orizzontale (`.table-wrap`), il grafico a barre del bilancio riduce le label.

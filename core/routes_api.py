@@ -9,6 +9,7 @@ from flask_login import current_user, login_required
 from core.api_keys import find_user_by_key
 from core.db import get_db
 from core.logic import get_tasks_for_date
+from core.utils import is_safe_url
 
 
 def register(app):
@@ -250,7 +251,7 @@ def _parse_task(db, uid, data):
     url = get("url") or None
     if url:
         # Solo http/https: l'URL diventa un link nella card (niente javascript: e simili)
-        if not _re.match(r"https?://\S+$", url, _re.IGNORECASE):
+        if not is_safe_url(url):
             return None, _err("Invalid URL: it must start with http:// or https://", "url")
         if len(url) > MAX_URL_LEN:
             return None, _err(f"URL too long (max {MAX_URL_LEN} characters)", "url")

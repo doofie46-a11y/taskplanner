@@ -19,6 +19,7 @@ CHANGELOG = [
             "➕ API: nuovi campi facoltativi ora, priorità, categoria, url e date come «domani» o «+3»; nuovo indirizzo /api/tasks (anche /add_from_mail continua a funzionare)",
             "⚠️ API: dati sbagliati (categoria inesistente, data o orario non validi, titolo oltre 500 caratteri) restituiscono un errore chiaro con il campo da correggere, senza creare il task",
             "🔒 La chiave API non viene più scritta nel log quando è inviata nel JSON",
+            "🛡️ Il campo URL dei task accetta solo link http:// e https:// (prima passavano anche link javascript:); un indirizzo senza https:// viene completato in automatico",
         ]
     },
     {

@@ -4,6 +4,7 @@ import uuid
 from datetime import date, datetime, timedelta
 
 from flask import redirect, render_template_string, request, url_for, current_app
+from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 
@@ -13,7 +14,7 @@ from core.logic import (
     calcola_priorita_effettiva, get_all_categories, get_tasks_for_date,
 )
 from core.templates import TEMPLATE_EDIT, TEMPLATE_INDEX, TEMPLATE_NEW
-from core.utils import allowed_file, format_time
+from core.utils import allowed_file, format_time, normalize_task_url
 
 
 def register(app):
@@ -76,7 +77,7 @@ def register(app):
         ric        = request.form.get("ricorrenza") or "none"
         prio       = request.form.get("priorita") or "Media"
         cat_id     = request.form.get("category_id") or None
-        url        = request.form.get("url") or None
+        url        = request.form.get("url")
         ric_fine   = request.form.get("ricorrenza_fine") or None
         ric_occ    = request.form.get("ricorrenza_occorrenze") or None
         if ric_occ:
@@ -94,6 +95,10 @@ def register(app):
                 datetime.strptime(ora, "%H:%M")
         except ValueError:
             return "Formato data/ora non valido", 400
+        try:
+            url = normalize_task_url(url)
+        except ValueError:
+            return _("URL non valido: sono ammessi solo link http:// o https://"), 400
 
         try:
             db = get_db()
@@ -236,7 +241,7 @@ def register(app):
                 ric        = request.form.get("ricorrenza")
                 prio       = request.form.get("priorita") or "Media"
                 cat_id     = request.form.get("category_id") or None
-                url        = request.form.get("url") or None
+                url        = request.form.get("url")
                 ric_fine   = request.form.get("ricorrenza_fine") or None
                 ric_occ    = request.form.get("ricorrenza_occorrenze") or None
                 if ric_occ:
@@ -254,6 +259,10 @@ def register(app):
                         datetime.strptime(ora, "%H:%M")
                 except ValueError:
                     return "Formato data/ora non valido", 400
+                try:
+                    url = normalize_task_url(url)
+                except ValueError:
+                    return _("URL non valido: sono ammessi solo link http:// o https://"), 400
 
                 c.execute("""
                     UPDATE tasks

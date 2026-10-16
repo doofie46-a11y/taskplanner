@@ -1,6 +1,32 @@
 """Funzioni di utilità condivise — nessuna dipendenza da DB o auth."""
 
+import re
+
 from flask import current_app
+
+_SAFE_URL_RE = re.compile(r"https?://\S+$", re.IGNORECASE)
+_SCHEME_RE   = re.compile(r"[a-z][a-z0-9+.-]*:", re.IGNORECASE)
+
+
+def is_safe_url(url) -> bool:
+    """True solo per link http/https: niente javascript:, data: ecc. nei link delle card."""
+    return bool(url) and bool(_SAFE_URL_RE.match(str(url)))
+
+
+def normalize_task_url(raw):
+    """
+    URL dal form di un task → valore da salvare. Vuoto → None; senza schema
+    (es. "esempio.com/x") → https:// davanti. Solleva ValueError se lo schema
+    non è http/https.
+    """
+    url = (raw or "").strip()
+    if not url:
+        return None
+    if not _SCHEME_RE.match(url) or url.lower().startswith(("localhost:", "www.")):
+        url = "https://" + url
+    if not is_safe_url(url):
+        raise ValueError(url)
+    return url
 
 ALLOWED_EXTENSIONS = {
     'txt', 'log', 'pdf', 'docx', 'doc', 'msg', 'odt',
