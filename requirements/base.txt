@@ -5,3 +5,5 @@ werkzeug>=3.1.9
 requests>=2.31
 # Dipendenza indiretta di requests: minimo per vulnerabilità note (pip-audit 2026-10-01)
 urllib3>=2.8.0
+# Dipendenza indiretta di requests: minimo per vulnerabilità nota PYSEC-2026-4320 (pip-audit 2026-10-21)
+certifi>=2026.10.19
