@@ -7,6 +7,9 @@ with Docker. Your data stays yours: no cloud, no tracking.
 *🇮🇹 Pianificatore di attività giornaliere: app desktop oppure server self-hosted con Docker.
 I dati restano tuoi, nessun cloud. Interfaccia in italiano e inglese.*
 
+**👉 [Try the live demo](https://demo.ideadibusiness.com)** — no sign-up: you get a throwaway account
+with sample data, deleted after 24 hours (attachments and API are disabled in the demo).
+
 | 🖥️ Desktop app | 🐳 Self-hosted server |
 |---|---|
 | Single executable, no install, no account. Data in a local SQLite file. | Multi-user web app with PostgreSQL, works on phones too. Docker image for `amd64` and `arm64` (Raspberry Pi). |
