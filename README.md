@@ -1,10 +1,16 @@
 # 📋 TaskPlanner
 
-A simple, private daily task planner for your desktop. Everything stays on your computer:
-no account, no cloud, no tracking.
+A simple, private daily task planner with recurring tasks, automatic rollover and reminders.
+Run it as a **desktop app** (Windows, Linux) or **self-host it** for your family or team
+with Docker. Your data stays yours: no cloud, no tracking.
 
-*🇮🇹 Pianificatore di attività giornaliere per desktop: i dati restano sul tuo computer,
-nessun account, nessun cloud. Interfaccia in italiano e inglese.*
+*🇮🇹 Pianificatore di attività giornaliere: app desktop oppure server self-hosted con Docker.
+I dati restano tuoi, nessun cloud. Interfaccia in italiano e inglese.*
+
+| 🖥️ Desktop app | 🐳 Self-hosted server |
+|---|---|
+| Single executable, no install, no account. Data in a local SQLite file. | Multi-user web app with PostgreSQL, works on phones too. Docker image for `amd64` and `arm64` (Raspberry Pi). |
+| [Download for Windows or Linux](https://github.com/doofie46-a11y/taskplanner/releases/latest) | [Up and running in 2 minutes with Docker Compose](#docker-compose) |
 
 ![TaskPlanner daily view](docs/screenshots/daily.png)
 
@@ -20,6 +26,7 @@ nessun account, nessun cloud. Interfaccia in italiano e inglese.*
 - **Contaschei**: a small personal income/expense tracker with recurring entries and period reports
 - **Dark mode**, Italian and English UI
 - **Outlook integration** on Windows (create events and tasks)
+- **Self-hosted server mode**: multi-user, PostgreSQL, password or Google sign-in, installable as a PWA on phones
 - **API** (server mode) to create tasks from Outlook, phone shortcuts, scripts and automation tools
 
 ## Screenshots
@@ -170,8 +177,8 @@ Then open http://127.0.0.1:8000 and sign in. The stack runs the app and PostgreS
 the database and attachments live in the `db-data` and `app-data` volumes.
 
 The image `ghcr.io/doofie46-a11y/taskplanner` is built by GitHub Actions for every release
-(`linux/amd64` and `linux/arm64`, e.g. Raspberry Pi), tagged with the version (`1.6.0`), the
-minor version (`1.6`) and `latest`. Pin a version with `TASKPLANNER_VERSION=1.6.0` in `.env`.
+(`linux/amd64` and `linux/arm64`, e.g. Raspberry Pi), tagged with the version (`1.7.0`), the
+minor version (`1.6`) and `latest`. Pin a version with `TASKPLANNER_VERSION=1.7.0` in `.env`.
 To check that an image was built from this repository:
 
 ```bash
