@@ -1287,3 +1287,18 @@ msgstr "Get TaskPlanner"
 
 msgid "Troppe demo avviate nell'ultima ora, riprova più tardi."
 msgstr "Too many demos started in the last hour, please try again later."
+
+msgid "Ogni N giorni…"
+msgstr "Every N days…"
+
+msgid "giorni"
+msgstr "days"
+
+msgid "Ogni quanti giorni"
+msgstr "Repeat every how many days"
+
+msgid "Ogni %(n)s giorni"
+msgstr "Every %(n)s days"
+
+msgid "Numero di giorni della ricorrenza non valido (1–%(max)s)"
+msgstr "Invalid number of days for the recurrence (1–%(max)s)"

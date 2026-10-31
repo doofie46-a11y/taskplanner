@@ -18,8 +18,8 @@ from flask_babel import Babel
 from flask_login import LoginManager
 from werkzeug.exceptions import HTTPException
 
-APP_VERSION  = '1.7.0'
-APP_CODENAME = 'Lambrusco'
+APP_VERSION  = '1.8.0'
+APP_CODENAME = "Nero d'Avola"
 
 # Link "offrimi una birra" mostrato in sidebar e changelog (vuoto = nascosto).
 # Override via env TASKPLANNER_SUPPORT_URL.
@@ -113,6 +113,10 @@ def create_app(mode: str, config_override: dict = None) -> Flask:
     from core.utils import is_safe_url
     # {% if url is safe_url %}: href solo per http/https (anche per valori salvati prima della 1.7.0)
     app.jinja_env.tests['safe_url'] = is_safe_url
+    from core.utils import EVERY_N_MAX, every_n_days
+    # every_n_days(ric): N per le ricorrenze "every_N_days", altrimenti None
+    app.jinja_env.globals['every_n_days'] = every_n_days
+    app.jinja_env.globals['EVERY_N_MAX'] = EVERY_N_MAX
 
     @app.context_processor
     def _inject_globals():

@@ -17,7 +17,7 @@ I dati restano tuoi, nessun cloud. Interfaccia in italiano e inglese.*
 ## Features
 
 - **Daily view** with priorities, times, pinned tasks and custom card colors
-- **Recurring tasks** (daily, weekly, monthly, first Monday, last Friday, …) with end date or max occurrences
+- **Recurring tasks** (daily, weekly, every N days, monthly, first Monday, last Friday, …) with end date or max occurrences
 - **Automatic rollover**: unfinished tasks move to today, with optional priority escalation the longer they wait
 - **Categories and groups** with live filters and counters
 - **Attachments** via drag & drop
@@ -177,8 +177,8 @@ Then open http://127.0.0.1:8000 and sign in. The stack runs the app and PostgreS
 the database and attachments live in the `db-data` and `app-data` volumes.
 
 The image `ghcr.io/doofie46-a11y/taskplanner` is built by GitHub Actions for every release
-(`linux/amd64` and `linux/arm64`, e.g. Raspberry Pi), tagged with the version (`1.7.0`), the
-minor version (`1.6`) and `latest`. Pin a version with `TASKPLANNER_VERSION=1.7.0` in `.env`.
+(`linux/amd64` and `linux/arm64`, e.g. Raspberry Pi), tagged with the version (`1.8.0`), the
+minor version (`1.8`) and `latest`. Pin a version with `TASKPLANNER_VERSION=1.8.0` in `.env`.
 To check that an image was built from this repository:
 
 ```bash

@@ -10,6 +10,16 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.8.0",
+        "codename": "Nero d'Avola",
+        "date": "2026-10-31",
+        "notes": [
+            "🔁 Nuova ricorrenza «Ogni N giorni»: un task può ripetersi ogni numero di giorni a scelta, da 1 a 365 (es. ogni 3 o ogni 10 giorni), anche con data di fine o numero di occorrenze",
+            "🧪 Server: modalità demo (DEMO_MODE=true) per un'istanza pubblica di prova: ogni visitatore riceve un account usa e getta con dati di esempio, cancellato dopo 24 ore; allegati e API disattivati",
+            "⚠️ API: con un JSON vuoto ({}) l'errore indica il campo obbligatorio mancante (titolo) invece di «Missing JSON body»",
+        ]
+    },
+    {
         "version": "1.7.0",
         "codename": "Lambrusco",
         "date": "2026-10-16",

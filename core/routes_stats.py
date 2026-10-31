@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 from core.db import get_db
 from core.logic import get_all_categories
 from core.templates import TEMPLATE_STATS
-from core.utils import format_time
+from core.utils import every_n_days, format_time
 
 
 def register(app):
@@ -189,6 +189,7 @@ def register(app):
                             elif ric == "every2days"   and dp <= cur and (cur - dp).days % 2  == 0: cade = True
                             elif ric == "weekly"       and dp <= cur and (cur - dp).days % 7  == 0: cade = True
                             elif ric == "every2weeks"  and dp <= cur and (cur - dp).days % 14 == 0: cade = True
+                            elif every_n_days(ric)     and dp <= cur and (cur - dp).days % every_n_days(ric) == 0: cade = True
                             elif ric == "monthly"      and dp <= cur and dp.day == cur.day:          cade = True
                             elif ric == "monthly_first_monday" and dp <= cur:
                                 first_day = cur.replace(day=1)

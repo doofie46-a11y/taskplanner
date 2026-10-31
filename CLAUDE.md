@@ -11,7 +11,7 @@ Supporta **due target di deployment**:
 | **Server** | Google OAuth e/o username+password | PostgreSQL | `app_server.py` | systemd + gunicorn |
 | **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
-**Versione corrente:** `1.7.0 "Lambrusco"`
+**Versione corrente:** `1.8.0 "Nero d'Avola"`
 
 **Licenza:** AGPL-3.0 (`LICENSE`) dalla 1.6.0, prima GPL-3.0. Link "Codice sorgente" in sidebar da `SOURCE_URL` (`core/factory.py`, env `TASKPLANNER_SOURCE_URL`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 
@@ -205,7 +205,7 @@ git push origin v1.X.Y
 | `titolo` | TEXT | |
 | `data_prevista` | DATE | formato `YYYY-MM-DD` |
 | `ora_prevista` | TEXT | formato `HH:MM` |
-| `ricorrenza` | TEXT | `none` / `daily` / `every2days` / `weekly` / `every2weeks` / `monthly` / `monthly_first_monday` / `monthly_last_friday` |
+| `ricorrenza` | TEXT | `none` / `daily` / `every2days` / `weekly` / `every2weeks` / `every_N_days` (dalla 1.8.0, N = 1–365; parsing con `every_n_days()` in `core/utils.py`, dal form arriva `every_n` + `ricorrenza_giorni` e lo converte `normalize_recurrence()`) / `monthly` / `monthly_first_monday` / `monthly_last_friday` |
 | `ricorrenza_fine` | DATE | data fine ricorrenza (opzionale) |
 | `ricorrenza_occorrenze` | INTEGER | numero massimo occorrenze (opzionale) |
 | `posticipato_da` | DATE | data originale prima del primo rollover |
@@ -343,6 +343,7 @@ Supportato su card (vista giornaliera), form modifica e form nuovo task. Usa sem
 - Solo `titolo` obbligatorio (max 500 caratteri); senza campi opzionali il comportamento è quello di sempre (oggi, Media, senza categoria)
 - `data_prevista`: `YYYY-MM-DD`, `oggi`/`today`, `domani`/`tomorrow`, `+N`; vuota = oggi. `priorita` anche in inglese. `categoria` per nome tra quelle dell'utente (case-insensitive). `url` solo http/https (diventa un link nella card)
 - Dati non validi o campi sconosciuti → 400 `{"ok": false, "error": "<inglese>", "field": "<campo>"}`, task non creato
+- Corpo vuoto o `null` → "Missing JSON body"; dalla 1.8.0 `{}` non conta come mancante e risponde "Field 'titolo' is required"
 - Nel log il corpo è registrato con la chiave sostituita da asterischi (`_mask_key`)
 - Pagina `/account/api` (solo server) con istruzioni ed esempi: HTTP Shortcuts, Comandi rapidi, macro VBA Outlook, curl/PowerShell
 - Rate limit: solo nel reverse proxy (in produzione nginx, vedi `CLAUDE.local.md`), non nell'app

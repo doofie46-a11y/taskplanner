@@ -44,6 +44,31 @@ _ICON_MAP = {
 }
 
 
+# Ricorrenza libera "ogni N giorni" (dalla 1.8.0), salvata come "every_N_days"
+EVERY_N_MAX = 365
+_EVERY_N_RE = re.compile(r"^every_(\d{1,3})_days$")
+
+
+def every_n_days(ric):
+    """N se ric è una ricorrenza "every_N_days" valida, altrimenti None."""
+    m = _EVERY_N_RE.match(ric or "")
+    n = int(m.group(1)) if m else 0
+    return n if 1 <= n <= EVERY_N_MAX else None
+
+
+def normalize_recurrence(ric, giorni):
+    """
+    Dal form: "every_n" + numero di giorni → "every_N_days".
+    ValueError se il numero manca o è fuori da 1..EVERY_N_MAX.
+    """
+    if ric != "every_n":
+        return ric
+    g = (giorni or "").strip()
+    if not g.isdigit() or not 1 <= int(g) <= EVERY_N_MAX:
+        raise ValueError(giorni)
+    return f"every_{int(g)}_days"
+
+
 def allowed_file(filename: str) -> bool:
     """Restituisce True se l'estensione del file è tra quelle ammesse."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

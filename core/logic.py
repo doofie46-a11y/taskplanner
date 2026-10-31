@@ -12,7 +12,7 @@ from flask_login import current_user
 
 from core.db import get_db
 from core.models import PRIO_LEVELS
-from core.utils import app_timezone, get_icon_for_filename
+from core.utils import app_timezone, every_n_days, get_icon_for_filename
 
 
 # ---------------------------------------------------------------- escalation
@@ -150,6 +150,7 @@ def get_tasks_for_date(selected_date, user_id=None):
             elif ric == "every2days"   and task_date <= sel_date and (sel_date - task_date).days % 2  == 0: show = True
             elif ric == "weekly"       and task_date <= sel_date and (sel_date - task_date).days % 7  == 0: show = True
             elif ric == "every2weeks"  and task_date <= sel_date and (sel_date - task_date).days % 14 == 0: show = True
+            elif every_n_days(ric)     and task_date <= sel_date and (sel_date - task_date).days % every_n_days(ric) == 0: show = True
             elif ric == "monthly"      and task_date <= sel_date and task_date.day == sel_date.day:    show = True
             elif ric == "monthly_first_monday" and task_date <= sel_date:
                 first_day = sel_date.replace(day=1)
@@ -176,6 +177,7 @@ def get_tasks_for_date(selected_date, user_id=None):
                     elif ric == "every2days"  and (cur_check - task_date).days % 2  == 0: cade_check = True
                     elif ric == "weekly"      and (cur_check - task_date).days % 7  == 0: cade_check = True
                     elif ric == "every2weeks" and (cur_check - task_date).days % 14 == 0: cade_check = True
+                    elif every_n_days(ric)    and (cur_check - task_date).days % every_n_days(ric) == 0: cade_check = True
                     elif ric == "monthly" and cur_check.day == task_date.day: cade_check = True
                     elif ric == "monthly_first_monday":
                         fd  = cur_check.replace(day=1)
@@ -195,6 +197,7 @@ def get_tasks_for_date(selected_date, user_id=None):
                     elif ric == "every2days":  cur_check += timedelta(days=2)
                     elif ric == "weekly":      cur_check += timedelta(days=7)
                     elif ric == "every2weeks": cur_check += timedelta(days=14)
+                    elif every_n_days(ric):    cur_check += timedelta(days=every_n_days(ric))
                     else:                      cur_check += timedelta(days=1)
 
             if show:
@@ -408,6 +411,7 @@ def _expand_recurring(tasks_rows, date_from: str, date_to: str) -> list:
                 elif ric == "every2days"     and dp <= cur and (cur - dp).days % 2  == 0: cade = True
                 elif ric == "weekly"         and dp <= cur and (cur - dp).days % 7  == 0: cade = True
                 elif ric == "every2weeks"    and dp <= cur and (cur - dp).days % 14 == 0: cade = True
+                elif every_n_days(ric)       and dp <= cur and (cur - dp).days % every_n_days(ric) == 0: cade = True
                 elif ric == "monthly"        and dp <= cur and dp.day == cur.day:          cade = True
                 elif ric == "monthly_first_monday" and dp <= cur:
                     first_day = cur.replace(day=1)
@@ -545,6 +549,7 @@ def _expand_recurring_movements(rows, date_from: str, date_to: str, exceptions: 
             elif ric == "every2days"     and dp <= cur and (cur - dp).days % 2  == 0: cade = True
             elif ric == "weekly"         and dp <= cur and (cur - dp).days % 7  == 0: cade = True
             elif ric == "every2weeks"    and dp <= cur and (cur - dp).days % 14 == 0: cade = True
+            elif every_n_days(ric)       and dp <= cur and (cur - dp).days % every_n_days(ric) == 0: cade = True
             elif ric == "monthly"        and dp <= cur and dp.day == cur.day:          cade = True
             elif ric == "monthly_first_monday" and dp <= cur:
                 first_day = cur.replace(day=1)

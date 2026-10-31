@@ -65,6 +65,8 @@ def register(app):
         masked = _mask_key(raw)
         current_app.logger.debug("add_from_mail body (%d chars): %s", len(raw), masked[:1000])
 
+        if not raw.strip():
+            return _err("Missing JSON body")
         data = None
         try:
             data = _json.loads(raw)
@@ -80,7 +82,8 @@ def register(app):
                 data = _json.loads(cleaned)
             except _json.JSONDecodeError:
                 return _err("Malformed JSON body")
-        if not data:
+        # {} non è "mancante": prosegue e risponde col campo obbligatorio che manca
+        if data is None:
             return _err("Missing JSON body")
         if not isinstance(data, dict):
             return _err("JSON body must be an object")

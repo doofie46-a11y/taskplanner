@@ -14,7 +14,8 @@ from core.logic import (
     calcola_priorita_effettiva, get_all_categories, get_tasks_for_date,
 )
 from core.templates import TEMPLATE_EDIT, TEMPLATE_INDEX, TEMPLATE_NEW
-from core.utils import allowed_file, format_time, normalize_task_url
+from core.utils import (EVERY_N_MAX, allowed_file, format_time, normalize_recurrence,
+                        normalize_task_url)
 
 
 def register(app):
@@ -99,6 +100,10 @@ def register(app):
             url = normalize_task_url(url)
         except ValueError:
             return _("URL non valido: sono ammessi solo link http:// o https://"), 400
+        try:
+            ric = normalize_recurrence(ric, request.form.get("ricorrenza_giorni"))
+        except ValueError:
+            return _("Numero di giorni della ricorrenza non valido (1–%(max)s)", max=EVERY_N_MAX), 400
 
         try:
             db = get_db()
@@ -263,6 +268,10 @@ def register(app):
                     url = normalize_task_url(url)
                 except ValueError:
                     return _("URL non valido: sono ammessi solo link http:// o https://"), 400
+                try:
+                    ric = normalize_recurrence(ric, request.form.get("ricorrenza_giorni"))
+                except ValueError:
+                    return _("Numero di giorni della ricorrenza non valido (1–%(max)s)", max=EVERY_N_MAX), 400
 
                 c.execute("""
                     UPDATE tasks
