@@ -117,7 +117,7 @@ def create_app(mode: str, config_override: dict = None) -> Flask:
     @app.context_processor
     def _inject_globals():
         return {'support_url': app.config['SUPPORT_URL'], 'source_url': app.config['SOURCE_URL'],
-                'is_desktop': mode == 'desktop'}
+                'is_desktop': mode == 'desktop', 'demo_mode': app.config.get('DEMO_MODE', False)}
 
     # ------------------------------------------------------------ Flask-Login
     login_manager = LoginManager()

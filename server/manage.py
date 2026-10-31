@@ -6,6 +6,7 @@ Usa le stesse variabili d'ambiente del server (DATABASE_URL, SECRET_KEY, …).
     python -m server.manage create-user mario --name "Mario Rossi"
     python -m server.manage set-password mario      # reimposta e sblocca
     python -m server.manage list-users
+    python -m server.manage purge-demo --hours 24   # solo con DEMO_MODE=true
 
 La password viene chiesta in modo interattivo; con --password-stdin la legge
 dalla prima riga dello standard input (utile negli script e in Docker).
@@ -50,6 +51,9 @@ def main(argv=None):
 
     sub.add_parser("list-users", help="elenca gli utenti")
 
+    p_purge = sub.add_parser("purge-demo", help="cancella gli account demo scaduti (DEMO_MODE)")
+    p_purge.add_argument("--hours", type=int, default=24)
+
     args = parser.parse_args(argv)
 
     from core.db import get_db
@@ -78,6 +82,13 @@ def main(argv=None):
                 sys.exit(f"Utente locale '{username}' non trovato.")
             set_password(db, row[0], _read_password(args.password_stdin))
             print(f"Password di '{username}' aggiornata.")
+
+        elif args.cmd == "purge-demo":
+            # Protezione: mai su un'istanza normale, dove un "demo-..." può essere un utente vero
+            if not app.config.get('DEMO_MODE'):
+                sys.exit("purge-demo funziona solo con DEMO_MODE=true.")
+            from server.demo import purge_demo_users
+            print(f"Account demo cancellati: {purge_demo_users(db, args.hours)}")
 
         elif args.cmd == "list-users":
             c.execute(

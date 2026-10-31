@@ -10,6 +10,8 @@ init_app(app, login_manager):
 from server.config import (
     APP_BASE_URL,
     DATABASE_URL,
+    DEMO_MAX_PER_HOUR,
+    DEMO_MODE,
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
     GOOGLE_ENABLED,
@@ -32,6 +34,16 @@ def init_app(app, login_manager):
     # --- init schema ---
     with app.app_context():
         init_db(app)
+
+    # --- demo pubblica: solo account usa e getta, niente login normale ---
+    app.config['DEMO_MODE'] = DEMO_MODE
+    app.config['DEMO_MAX_PER_HOUR'] = DEMO_MAX_PER_HOUR
+    if DEMO_MODE:
+        app.config['LOCAL_AUTH_ENABLED']  = False
+        app.config['GOOGLE_AUTH_ENABLED'] = False
+        from server.auth import register as register_auth
+        register_auth(app, login_manager, None)
+        return
 
     # --- metodi di login ---
     if not (GOOGLE_ENABLED or LOCAL_AUTH_ENABLED):

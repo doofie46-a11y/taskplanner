@@ -44,12 +44,15 @@ def register(app, login_manager, oauth=None):
             pass
         return None
 
-    def _render_login(error=None, username=""):
+    def _render_login(error=None, username="", error_busy=False):
+        if error_busy:
+            error = _("Troppe demo avviate nell'ultima ora, riprova più tardi.")
         return render_template_string(
             _LOGIN_PAGE,
             version=current_app.config['APP_VERSION'],
             google_enabled=google_enabled,
             local_enabled=local_enabled,
+            demo_mode=current_app.config.get('DEMO_MODE', False),
             csrf_token=_csrf_token(),
             error=error,
             username=username,
@@ -109,6 +112,10 @@ def register(app, login_manager, oauth=None):
 
     if google_enabled:
         _register_google(app, oauth)
+
+    if app.config.get('DEMO_MODE'):
+        from server.demo import register as register_demo
+        register_demo(app, _render_login, _csrf_ok)
 
 
 def _register_google(app, oauth):

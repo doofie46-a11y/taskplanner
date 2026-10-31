@@ -1265,3 +1265,25 @@ msgstr "Invalid URL: only http:// or https:// links are allowed"
 
 msgid "Solo link http:// o https://"
 msgstr "Only http:// or https:// links"
+
+# Demo pubblica (DEMO_MODE)
+msgid "Prova TaskPlanner senza installare nulla: ricevi un account tutto tuo con alcuni task di esempio."
+msgstr "Try TaskPlanner without installing anything: you get your own account with some sample tasks."
+
+msgid "Prova la demo"
+msgstr "Try the demo"
+
+msgid "Account e dati vengono cancellati automaticamente dopo 24 ore. Allegati e API non sono disponibili nella demo."
+msgstr "Your account and data are deleted automatically after 24 hours. Attachments and the API are not available in the demo."
+
+msgid "Scarica TaskPlanner o installalo sul tuo server"
+msgstr "Download TaskPlanner or install it on your own server"
+
+msgid "Demo: questo account e i suoi dati vengono cancellati dopo 24 ore."
+msgstr "Demo: this account and its data are deleted after 24 hours."
+
+msgid "Scarica TaskPlanner"
+msgstr "Get TaskPlanner"
+
+msgid "Troppe demo avviate nell'ultima ora, riprova più tardi."
+msgstr "Too many demos started in the last hour, please try again later."

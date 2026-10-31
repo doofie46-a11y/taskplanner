@@ -20,3 +20,8 @@ APP_BASE_URL = os.environ.get("APP_BASE_URL", "http://localhost:5000")
 
 # Email di contatto mostrata nell'informativa privacy (/privacy)
 PRIVACY_CONTACT_EMAIL = os.environ.get("PRIVACY_CONTACT_EMAIL", "")
+
+# Demo pubblica: account usa e getta con dati di esempio (vedi server/demo.py).
+# Disattiva login normale, allegati e API.
+DEMO_MODE         = os.environ.get("DEMO_MODE", "").strip().lower() in ("1", "true", "yes", "on")
+DEMO_MAX_PER_HOUR = int(os.environ.get("DEMO_MAX_PER_HOUR", "200"))

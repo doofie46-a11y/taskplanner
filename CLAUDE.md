@@ -75,7 +75,8 @@ taskplanner/
 │   ├── auth.py                # login (Google OAuth e/o locale), cambio password, user loader
 │   ├── users.py               # account locali: hash password, lockout, categorie default
 │   ├── api_keys.py            # /account/api: crea/rigenera/revoca chiavi API (CSRF)
-│   ├── manage.py              # CLI: python -m server.manage create-user|set-password|list-users
+│   ├── demo.py                # DEMO_MODE: account usa e getta con dati di esempio, purge
+│   ├── manage.py              # CLI: python -m server.manage create-user|set-password|list-users|purge-demo
 │   └── config.py              # DATABASE_URL, GOOGLE_CLIENT_ID/SECRET, LOCAL_AUTH, APP_BASE_URL
 │
 ├── desktop/                   # desktop-only: sqlite + local auth
@@ -243,6 +244,12 @@ Chiavi `tp_` + 32 byte casuali, mostrate in chiaro una volta sola (risposta del 
 - Lockout nel DB (vale con più worker gunicorn): 5 tentativi falliti → bloccato 15 minuti; `set-password` sblocca. Messaggio d'errore unico per credenziali errate/account bloccato/username inesistente (niente enumerazione), hash fittizio verificato anche per username inesistenti
 - CSRF token in sessione sui form di login, cambio password e pagina chiavi API (il resto dell'app non ha CSRF)
 
+### Modalità demo (`DEMO_MODE=true`, dalla 1.8.0)
+- Istanza pubblica separata (DB proprio): la pagina di login mostra solo "Prova la demo", che crea un utente `demo-<hex>` senza password con categorie, task, completamenti e movimenti di esempio nella lingua del visitatore (`server/demo.py`)
+- Login normale/Google disattivati; bloccati con 403 allegati (`/upload/`, `/download/`, `/delete_attachment/`), `/account/*` (chiavi API, password) e `/api/tasks`/`/add_from_mail`; in UI nascosti il link API e la graffetta, banner "Demo" in testa alla vista giornaliera
+- Tetto `DEMO_MAX_PER_HOUR` (default 200) account creati all'ora in tutto, oltre → 503; il rate limit per IP sta nel reverse proxy
+- Pulizia: `python -m server.manage purge-demo --hours 24` (rifiuta di girare senza `DEMO_MODE`); cancella anche `task_completed`/`rollover_history`, che non hanno FK
+
 ### `movement_categories` (Contaschei)
 `id`, `user_id`, `name`, `type` (`income`/`expense`), `color` (HEX)
 
@@ -305,6 +312,7 @@ Nessun soft-delete: `DELETE` diretto (stesso pattern di `delete_category()`).
 | `/contaschei/categories/update/<cid>` | POST | contaschei | Aggiorna tipologia (blocca cambio `type` se ha movimenti collegati) |
 | `/contaschei/categories/delete/<cid>` | POST | contaschei | Elimina tipologia (`category_id=NULL` sui movimenti collegati) |
 | `/contaschei/bilancio` | GET | contaschei | Bilancio per periodo (mese/bimestre/trimestre/quadrimestre/semestre/anno), filtri tipo/tipologia |
+| `/demo/start` | POST | auth | (solo DEMO_MODE) Crea un account demo con dati di esempio e fa login (CSRF) |
 | `/login` | GET/POST | auth | Pagina login; POST = login locale (server) |
 | `/account/password` | GET/POST | auth | (server, solo account locali) Cambio password |
 | `/account/api` | GET | auth | (server) Pagina API e integrazioni: chiavi e istruzioni |
