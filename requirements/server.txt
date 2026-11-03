@@ -5,4 +5,4 @@ authlib>=1.9.1
 gunicorn>=21.0
 # Dipendenze indirette di authlib (login Google): minimi per vulnerabilità note (pip-audit)
 cryptography>=50.0.0
-joserfc>=1.6.8
+joserfc>=1.7.6
