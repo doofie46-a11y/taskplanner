@@ -1,5 +1,5 @@
 """
-Adapter server: PostgreSQL + Google OAuth e/o login locale (username e password).
+Adapter server: PostgreSQL + Google OAuth, Cloudflare Access e/o login locale (username e password).
 
 init_app(app, login_manager):
   - Imposta DB_FACTORY e DB_DIALECT
@@ -9,6 +9,11 @@ init_app(app, login_manager):
 """
 from server.config import (
     APP_BASE_URL,
+    CF_ACCESS_AUD,
+    CF_ACCESS_AUTO_CREATE,
+    CF_ACCESS_ENABLED,
+    CF_ACCESS_PARTIAL,
+    CF_ACCESS_TEAM_DOMAIN,
     DATABASE_URL,
     DEMO_MAX_PER_HOUR,
     DEMO_MODE,
@@ -41,18 +46,28 @@ def init_app(app, login_manager):
     if DEMO_MODE:
         app.config['LOCAL_AUTH_ENABLED']  = False
         app.config['GOOGLE_AUTH_ENABLED'] = False
+        app.config['CF_ACCESS_ENABLED']   = False
         from server.auth import register as register_auth
         register_auth(app, login_manager, None)
         return
 
     # --- metodi di login ---
-    if not (GOOGLE_ENABLED or LOCAL_AUTH_ENABLED):
+    if CF_ACCESS_PARTIAL:
         raise RuntimeError(
-            "Nessun metodo di login attivo: configura GOOGLE_CLIENT_ID/SECRET "
-            "oppure imposta LOCAL_AUTH=true (vedi .env.example)."
+            "Cloudflare Access configurato a metà: servono sia CF_ACCESS_TEAM_DOMAIN "
+            "sia CF_ACCESS_AUD (vedi .env.example)."
         )
-    app.config['LOCAL_AUTH_ENABLED']  = LOCAL_AUTH_ENABLED
-    app.config['GOOGLE_AUTH_ENABLED'] = GOOGLE_ENABLED
+    if not (GOOGLE_ENABLED or LOCAL_AUTH_ENABLED or CF_ACCESS_ENABLED):
+        raise RuntimeError(
+            "Nessun metodo di login attivo: configura GOOGLE_CLIENT_ID/SECRET, "
+            "CF_ACCESS_TEAM_DOMAIN/CF_ACCESS_AUD oppure imposta LOCAL_AUTH=true (vedi .env.example)."
+        )
+    app.config['LOCAL_AUTH_ENABLED']    = LOCAL_AUTH_ENABLED
+    app.config['GOOGLE_AUTH_ENABLED']   = GOOGLE_ENABLED
+    app.config['CF_ACCESS_ENABLED']     = CF_ACCESS_ENABLED
+    app.config['CF_ACCESS_TEAM_DOMAIN'] = CF_ACCESS_TEAM_DOMAIN
+    app.config['CF_ACCESS_AUD']         = CF_ACCESS_AUD
+    app.config['CF_ACCESS_AUTO_CREATE'] = CF_ACCESS_AUTO_CREATE
 
     oauth = None
     if GOOGLE_ENABLED:

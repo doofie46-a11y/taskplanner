@@ -201,11 +201,13 @@ To build the image yourself instead, clone the repository and run `docker compos
 
 ### Sign-in
 
-Users sign in with Google, with a username and password, or both:
+Users sign in with Google, through Cloudflare Access, with a username and password, or any
+combination of them (each enabled method gets its own button on the sign-in page):
 
 - **Google**: set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
-- **Username and password**: enabled automatically when Google is not configured, or with
-  `LOCAL_AUTH=true` next to Google. There is no public sign-up: accounts are created from the
+- **Cloudflare Access**: see below.
+- **Username and password**: enabled automatically when neither Google nor Cloudflare Access is
+  configured, or with `LOCAL_AUTH=true` next to them. There is no public sign-up: accounts are created from the
   command line, with the same environment variables as the server (with Docker, prefix the
   commands with `docker compose exec app`):
 
@@ -217,6 +219,33 @@ Users sign in with Google, with a username and password, or both:
 
   Passwords are stored as salted hashes. After 5 wrong attempts an account is locked for
   15 minutes. Users can change their password from the key icon next to their name.
+
+#### Cloudflare Access
+
+If TaskPlanner is behind Cloudflare, [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/)
+can handle sign-in (one-time PIN by email, Google, GitHub, your company SSO…). Cloudflare attaches
+a signed JWT to every request, and TaskPlanner verifies it (signature, audience, issuer, expiry)
+before trusting the email inside.
+
+1. In Zero Trust, create a self-hosted Access application for your TaskPlanner host and a policy
+   with the people allowed in. **The policy is the allowlist**: the first time an allowed email
+   arrives, TaskPlanner creates its account (set `CF_ACCESS_AUTO_CREATE=false` to accept only
+   emails of existing accounts). Existing accounts, including Google ones, are matched by email.
+2. Set `CF_ACCESS_TEAM_DOMAIN` (`<team>.cloudflareaccess.com`) and `CF_ACCESS_AUD` (the
+   application's *Application Audience (AUD) tag*).
+3. Choose how it works:
+   - **Access on the whole host**: users are signed in automatically and never see the sign-in
+     page. You can turn the other methods off (`LOCAL_AUTH=false`, no Google variables).
+   - **Access only on the path `/auth/cloudflare`**: the sign-in page shows a *Sign in with
+     Cloudflare* button next to the other methods.
+4. Add a **Bypass** policy for `/api/tasks` and `/add_from_mail`: API clients authenticate with
+   their API key and cannot go through the Access login.
+
+A session opened through Cloudflare lasts as long as the Access session: when it expires (or
+another user signs in to Access) TaskPlanner follows along, and *Log out* also ends the Access
+session. With Access on the whole host, an installed app (PWA) shows the Cloudflare sign-in again
+when the Access session expires, so pick a session duration that suits you in the application
+settings. Service tokens are rejected, as they carry no email.
 
 ### API
 

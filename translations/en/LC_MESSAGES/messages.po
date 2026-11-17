@@ -1302,3 +1302,15 @@ msgstr "Every %(n)s days"
 
 msgid "Numero di giorni della ricorrenza non valido (1–%(max)s)"
 msgstr "Invalid number of days for the recurrence (1–%(max)s)"
+
+msgid "Accedi tramite Cloudflare Access per continuare."
+msgstr "Sign in through Cloudflare Access to continue."
+
+msgid "Accedi con Cloudflare"
+msgstr "Sign in with Cloudflare"
+
+msgid "Nessun account TaskPlanner è associato a questa email. Chiedi all'amministratore di crearlo."
+msgstr "No TaskPlanner account is linked to this email. Ask the administrator to create one."
+
+msgid "Cloudflare Access non ha fornito un'identità valida. Riprova, oppure contatta l'amministratore."
+msgstr "Cloudflare Access did not provide a valid identity. Try again, or contact the administrator."

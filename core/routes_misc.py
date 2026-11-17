@@ -10,6 +10,15 @@ from core.templates.calendar import _CALENDAR_JS
 
 CHANGELOG = [
     {
+        "version": "1.9.0",
+        "codename": "Roero",
+        "date": "2026-11-17",
+        "notes": [
+            "🔐 Server: accesso tramite Cloudflare Access (opzionale, CF_ACCESS_TEAM_DOMAIN e CF_ACCESS_AUD): con Access su tutto il sito si entra in automatico, oppure compare il pulsante «Accedi con Cloudflare» accanto a Google e username/password. Account creato al primo accesso, chi può entrare lo decide la policy di Access",
+            "🚪 Esci chiude anche la sessione Cloudflare Access, e se la sessione Access scade si esce anche da TaskPlanner",
+        ]
+    },
+    {
         "version": "1.8.0",
         "codename": "Nero d'Avola",
         "date": "2026-10-31",

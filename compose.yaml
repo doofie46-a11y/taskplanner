@@ -32,7 +32,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # Variabili opzionali (Google OAuth, PRIVACY_CONTACT_EMAIL, TZ_NAME, …) dal file .env
+    # Variabili opzionali (Google OAuth, Cloudflare Access, PRIVACY_CONTACT_EMAIL, TZ_NAME, …) dal file .env
     env_file: .env
     environment:
       SECRET_KEY: ${SECRET_KEY:?imposta SECRET_KEY nel file .env}

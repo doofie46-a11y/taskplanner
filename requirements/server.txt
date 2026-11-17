@@ -3,6 +3,7 @@ psycopg2-binary>=2.9
 # Login Google: minimo per 7 vulnerabilità note in 1.7.2 (pip-audit 2026-10-28)
 authlib>=1.9.1
 gunicorn>=21.0
-# Dipendenze indirette di authlib (login Google): minimi per vulnerabilità note (pip-audit)
+# Dipendenze di authlib (login Google): minimi per vulnerabilità note (pip-audit).
+# joserfc serve anche direttamente, per verificare i JWT di Cloudflare Access (server/cf_access.py)
 cryptography>=50.0.0
 joserfc>=1.7.6

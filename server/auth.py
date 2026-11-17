@@ -1,14 +1,15 @@
-"""Auth server: Google OAuth e/o login locale, logout, user_loader."""
+"""Auth server: Google OAuth, Cloudflare Access e/o login locale, logout, user_loader."""
 import hmac
 import secrets
 
-from flask import abort, current_app, redirect, render_template_string, request, session, url_for
+from flask import abort, current_app, g, redirect, render_template_string, request, session, url_for
 from flask_babel import gettext as _
 from flask_login import current_user, login_user, logout_user, login_required
 
 from core.db import get_db
 from core.models import User
 from core.templates import _LOGIN_PAGE, _PASSWORD_PAGE
+from server import cf_access
 from server.users import (
     MIN_PASSWORD_LEN, USER_COLUMNS, authenticate, check_user_password,
     create_default_categories, set_password,
@@ -30,6 +31,7 @@ def register(app, login_manager, oauth=None):
     """Registra le route di autenticazione e il user_loader su login_manager."""
     google_enabled = oauth is not None
     local_enabled  = app.config['LOCAL_AUTH_ENABLED']
+    cf_enabled     = app.config.get('CF_ACCESS_ENABLED', False)
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -52,6 +54,7 @@ def register(app, login_manager, oauth=None):
             version=current_app.config['APP_VERSION'],
             google_enabled=google_enabled,
             local_enabled=local_enabled,
+            cf_enabled=cf_enabled,
             demo_mode=current_app.config.get('DEMO_MODE', False),
             csrf_token=_csrf_token(),
             error=error,
@@ -107,11 +110,19 @@ def register(app, login_manager, oauth=None):
     @app.route("/logout", methods=["POST", "GET"])
     @login_required
     def logout():
+        via_cf = session.pop('auth_via', None) == 'cf'
         logout_user()
+        if cf_enabled and (via_cf or cf_access.get_token()):
+            # Chiude anche la sessione Access: altrimenti con Access su tutto il dominio
+            # la richiesta successiva rifarebbe login in automatico
+            return redirect("/cdn-cgi/access/logout")
         return redirect(url_for("login_page"))
 
     if google_enabled:
         _register_google(app, oauth)
+
+    if cf_enabled:
+        _register_cf_access(app, _render_login)
 
     if app.config.get('DEMO_MODE'):
         from server.demo import register as register_demo
@@ -174,3 +185,66 @@ def _register_google(app, oauth):
         except Exception:
             current_app.logger.exception("Errore callback OAuth")
             return redirect(url_for("login_page"))
+
+
+# Path che non aprono né chiudono sessioni Cloudflare: API con chiave (in Access vanno in
+# Bypass, quindi senza JWT) e asset statici/PWA, inutile verificare il JWT a ogni icona.
+_CF_SKIP_PATHS    = ("/api/", "/add_from_mail", "/static/")
+_CF_SKIP_ENDPOINTS = {"static"}
+_CF_SKIP_EXACT    = {
+    "/favicon.ico", "/manifest.json", "/sw.js", "/pwa-icon-192.png", "/pwa-icon-512.png",
+    "/outlook.js", "/calendar.js",
+}
+
+
+def _register_cf_access(app, render_login):
+    """Login tramite Cloudflare Access: la sessione segue il JWT allegato da Cloudflare."""
+
+    @app.before_request
+    def _cf_access_session():
+        path = request.path
+        if (path.startswith(_CF_SKIP_PATHS) or path in _CF_SKIP_EXACT
+                or request.endpoint in _CF_SKIP_ENDPOINTS):
+            return
+        claims = cf_access.current_identity() if cf_access.get_token() else None
+        g.cf_claims = claims
+        g.cf_user_missing = False
+        if claims is None:
+            # Sessione aperta via Cloudflare ma JWT sparito/scaduto: si chiude anche qui
+            if session.get('auth_via') == 'cf' and current_user.is_authenticated:
+                current_app.logger.info("Cloudflare Access: JWT assente, logout utente %s", current_user.id)
+                session.pop('auth_via', None)
+                logout_user()
+            return
+        email = claims["email"]
+        if current_user.is_authenticated and (current_user.email or "").strip().lower() == email:
+            return
+        user_id = cf_access.find_or_create_user(get_db(), email, current_app.config['CF_ACCESS_AUTO_CREATE'])
+        if user_id is None:
+            g.cf_user_missing = True
+            if session.get('auth_via') == 'cf' and current_user.is_authenticated:
+                session.pop('auth_via', None)
+                logout_user()
+            return
+        db = get_db()
+        c  = db.cursor()
+        c.execute(f"SELECT {USER_COLUMNS} FROM users WHERE id = %s", (user_id,))
+        if current_user.is_authenticated:
+            current_app.logger.info(
+                "Cloudflare Access: cambio utente %s → %s (%s)", current_user.id, user_id, email,
+            )
+        # remember=False: la durata della sessione la decide Access, non un cookie dell'app
+        login_user(User(*c.fetchone()), remember=False)
+        session['auth_via'] = 'cf'
+
+    @app.route("/auth/cloudflare")
+    def cf_login():
+        # Con Access su questo path (modo B) Cloudflare chiede il login prima di arrivare qui,
+        # e l'hook sopra ha già aperto la sessione.
+        if current_user.is_authenticated:
+            return redirect(url_for("home"))
+        if g.get('cf_user_missing'):
+            error = _("Nessun account TaskPlanner è associato a questa email. Chiedi all'amministratore di crearlo.")
+        else:
+            error = _("Cloudflare Access non ha fornito un'identità valida. Riprova, oppure contatta l'amministratore.")
+        return render_login(error), 403

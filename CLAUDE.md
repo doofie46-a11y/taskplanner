@@ -8,10 +8,10 @@ Supporta **due target di deployment**:
 
 | Target | Auth | DB | Entry point | Distribuzione |
 |---|---|---|---|---|
-| **Server** | Google OAuth e/o username+password | PostgreSQL | `app_server.py` | systemd + gunicorn |
+| **Server** | Google OAuth, Cloudflare Access e/o username+password | PostgreSQL | `app_server.py` | systemd + gunicorn |
 | **Desktop** | auto-login locale | SQLite | `app_desktop.py` | PyInstaller (Win/Linux; macOS solo da sorgente) |
 
-**Versione corrente:** `1.8.0 "Nero d'Avola"`
+**Versione corrente:** `1.9.0 "Roero"`
 
 **Licenza:** AGPL-3.0 (`LICENSE`) dalla 1.6.0, prima GPL-3.0. Link "Codice sorgente" in sidebar da `SOURCE_URL` (`core/factory.py`, env `TASKPLANNER_SOURCE_URL`). Dettagli dell'istanza di produzione (server, deploy, backup) in `CLAUDE.local.md`, non versionato.
 
@@ -72,12 +72,13 @@ taskplanner/
 │
 ├── server/                    # server-only: postgres + google oauth
 │   ├── db.py                  # psycopg2 factory, init_db() PostgreSQL
-│   ├── auth.py                # login (Google OAuth e/o locale), cambio password, user loader
+│   ├── auth.py                # login (Google OAuth, Cloudflare Access e/o locale), cambio password, user loader
+│   ├── cf_access.py           # Cloudflare Access: verifica JWT (joserfc, chiavi in cache), utente per email
 │   ├── users.py               # account locali: hash password, lockout, categorie default
 │   ├── api_keys.py            # /account/api: crea/rigenera/revoca chiavi API (CSRF)
 │   ├── demo.py                # DEMO_MODE: account usa e getta con dati di esempio, purge
 │   ├── manage.py              # CLI: python -m server.manage create-user|set-password|list-users|purge-demo
-│   └── config.py              # DATABASE_URL, GOOGLE_CLIENT_ID/SECRET, LOCAL_AUTH, APP_BASE_URL
+│   └── config.py              # DATABASE_URL, GOOGLE_CLIENT_ID/SECRET, CF_ACCESS_*, LOCAL_AUTH, APP_BASE_URL
 │
 ├── desktop/                   # desktop-only: sqlite + local auth
 │   ├── db.py                  # sqlite3 factory, init_db() SQLite
@@ -239,10 +240,18 @@ git push origin v1.X.Y
 Chiavi `tp_` + 32 byte casuali, mostrate in chiaro una volta sola (risposta del POST di creazione/rigenerazione, `Cache-Control: no-store`). Max 10 per utente. All'avvio `migrate_legacy_keys()` sposta `users.api_key` in chiaro in `api_keys` (nome "Chiave precedente") e lo azzera. In desktop la tabella esiste ma resta vuota (niente pagina, l'API non è usabile).
 
 ### Login locale (dalla 1.6.0)
-- Google attivo se `GOOGLE_CLIENT_ID`+`SECRET` sono impostati; login locale attivo con `LOCAL_AUTH=true`, oppure di default se Google non è configurato. Nessuno dei due → `RuntimeError` all'avvio
+- Google attivo se `GOOGLE_CLIENT_ID`+`SECRET` sono impostati; login locale attivo con `LOCAL_AUTH=true`, oppure di default se né Google né Cloudflare Access sono configurati. Nessun metodo attivo → `RuntimeError` all'avvio
 - Niente registrazione pubblica: account creati da CLI (`server/manage.py`)
 - Lockout nel DB (vale con più worker gunicorn): 5 tentativi falliti → bloccato 15 minuti; `set-password` sblocca. Messaggio d'errore unico per credenziali errate/account bloccato/username inesistente (niente enumerazione), hash fittizio verificato anche per username inesistenti
 - CSRF token in sessione sui form di login, cambio password e pagina chiavi API (il resto dell'app non ha CSRF)
+
+### Cloudflare Access (dalla 1.9.0)
+- Attivo con `CF_ACCESS_TEAM_DOMAIN` + `CF_ACCESS_AUD` (una sola delle due → `RuntimeError`); con Access attivo il login locale non è più il default. Disattivato in `DEMO_MODE`
+- Hook `before_request` (`_register_cf_access` in `server/auth.py`): JWT da header `Cf-Access-Jwt-Assertion` o cookie `CF_Authorization`, verificato in `server/cf_access.py` (RS256 con le chiavi `/cdn-cgi/access/certs` del team in cache 1 h, riletta se arriva un `kid` sconosciuto; `iss`, `aud`, `exp`, leeway 60 s). Senza `email` (service token) → rifiutato. Mai usare l'header `Cf-Access-Authenticated-User-Email`: falsificabile da chi raggiunge l'origin
+- JWT valido → utente cercato per `lower(email)` (più match: id più basso + warning), creato se manca (`CF_ACCESS_AUTO_CREATE`, default true: l'allowlist è la policy Access), `login_user(remember=False)`, `session['auth_via']='cf'`; JWT di un altro utente → cambio utente. JWT assente/non valido con `auth_via=='cf'` → logout. Le sessioni Google/locali senza JWT non vengono toccate
+- Saltati dall'hook: `/api/`, `/add_from_mail`, statici e asset PWA. In Access vanno in Bypass `/api/tasks` e `/add_from_mail`
+- `/logout` con sessione CF o JWT presente → redirect a `/cdn-cgi/access/logout` (altrimenti con Access su tutto il dominio si rientrerebbe subito)
+- Due configurazioni Access, stesso codice: su tutto il dominio (login automatico) o solo su `/auth/cloudflare` (pulsante nella pagina di login)
 
 ### Modalità demo (`DEMO_MODE=true`, dalla 1.8.0)
 - Istanza pubblica separata (DB proprio): la pagina di login mostra solo "Prova la demo", che crea un utente `demo-<hex>` senza password con categorie, task, completamenti e movimenti di esempio nella lingua del visitatore (`server/demo.py`)
@@ -318,6 +327,7 @@ Nessun soft-delete: `DELETE` diretto (stesso pattern di `delete_category()`).
 | `/account/api` | GET | auth | (server) Pagina API e integrazioni: chiavi e istruzioni |
 | `/account/api/create`, `/account/api/<kid>/regenerate`, `/account/api/<kid>/delete` | POST | auth | (server) Gestione chiavi API (CSRF) |
 | `/logout` | POST | auth | Logout |
+| `/auth/cloudflare` | GET | auth | (server, solo con Cloudflare Access) Home se l'hook ha aperto la sessione, altrimenti login con errore (403) |
 | `/auth/google/login` | GET | auth | (server only) Avvia OAuth |
 | `/auth/google/callback` | GET | auth | (server only) Callback OAuth |
 | `/outlook/crea_evento` | POST | outlook | (desktop only) Crea evento Outlook |
@@ -439,7 +449,7 @@ Per aggiungere una nuova lingua:
 - `flask`, `flask-login`, `werkzeug`, `requests`
 
 ### Server only
-- `psycopg2-binary`, `authlib`, `gunicorn`
+- `psycopg2-binary`, `authlib`, `gunicorn`, `joserfc` (già dipendenza di authlib, usata anche direttamente per i JWT di Cloudflare Access)
 
 ### Desktop only
 - `pyinstaller`, `pystray`
